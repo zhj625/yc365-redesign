@@ -1,6 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { CATEGORIES, FILTERS } from '../constants';
-import { Filter, ChevronDown, ArrowUpDown, Clock, Flame } from 'lucide-react';
+import { 
+  Filter, 
+  ChevronDown, 
+  Clock, 
+  Calendar, 
+  BarChart3, 
+  Activity, 
+  Droplets, 
+  Trophy, 
+  Zap 
+} from 'lucide-react';
 
 interface FilterBarProps {
   activeCategory: string;
@@ -10,16 +20,16 @@ interface FilterBarProps {
 }
 
 const MORE_CATEGORIES = [
-  { id: 'science', label: '科学' },
-  { id: 'health', label: '健康' },
-  { id: 'entertainment', label: '娱乐' },
-  { id: 'education', label: '教育' },
+  { id: 'activity', label: '活动', icon: <Zap className="w-4 h-4 text-purple-500" /> },
+  { id: 'leaderboard', label: '排行榜', icon: <Trophy className="w-4 h-4 text-yellow-500" /> },
 ];
 
 const SORT_OPTIONS = [
-  { id: 'trending', label: '热门交易', icon: <Flame className="w-4 h-4 text-orange-500" /> },
-  { id: 'newest', label: '最新发布', icon: <Clock className="w-4 h-4 text-blue-500" /> },
-  { id: 'volume', label: '交易量', icon: <ArrowUpDown className="w-4 h-4 text-emerald-500" /> },
+  { id: 'created_at', label: '创建时间', icon: <Clock className="w-4 h-4 text-slate-400" /> },
+  { id: 'expires_at', label: '到期时间', icon: <Calendar className="w-4 h-4 text-slate-400" /> },
+  { id: 'total_volume', label: '总交易量', icon: <BarChart3 className="w-4 h-4 text-slate-400" /> },
+  { id: '24h_volume', label: '24小时交易量', icon: <Activity className="w-4 h-4 text-slate-400" /> },
+  { id: 'liquidity', label: '流动性', icon: <Droplets className="w-4 h-4 text-slate-400" /> },
 ];
 
 const FilterBar: React.FC<FilterBarProps> = ({ 
@@ -30,7 +40,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 }) => {
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   const [showSortMenu, setShowSortMenu] = useState(false);
-  const [currentSort, setCurrentSort] = useState('trending');
+  const [currentSort, setCurrentSort] = useState('created_at');
   
   const moreMenuRef = useRef<HTMLDivElement>(null);
   const sortMenuRef = useRef<HTMLDivElement>(null);
@@ -86,7 +96,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           </button>
 
           {showMoreMenu && (
-            <div className="absolute top-full right-0 mt-1 w-32 bg-white rounded-xl shadow-xl border border-slate-100 py-1 z-50 animate-in fade-in zoom-in-95 duration-100 origin-top-right">
+            <div className="absolute top-full right-0 mt-1 w-40 bg-white rounded-xl shadow-xl border border-slate-100 py-1 z-50 animate-in fade-in zoom-in-95 duration-100 origin-top-right">
               {MORE_CATEGORIES.map((cat) => (
                 <button
                   key={cat.id}
@@ -94,10 +104,11 @@ const FilterBar: React.FC<FilterBarProps> = ({
                     setActiveCategory(cat.id);
                     setShowMoreMenu(false);
                   }}
-                  className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-50 transition-colors ${
+                  className={`w-full text-left px-4 py-2.5 text-sm hover:bg-slate-50 transition-colors flex items-center gap-2.5 ${
                     activeCategory === cat.id ? 'text-blue-600 font-medium bg-blue-50' : 'text-slate-600'
                   }`}
                 >
+                  {cat.icon}
                   {cat.label}
                 </button>
               ))}
@@ -108,20 +119,21 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
       {/* Chips / Tags & Sort Button */}
       <div className="flex items-center gap-3">
-        {/* Sort Dropdown (Replaced static icon) */}
+        {/* Sort Dropdown */}
         <div className="relative" ref={sortMenuRef}>
             <button 
                 onClick={() => setShowSortMenu(!showSortMenu)}
                 className={`flex items-center justify-center w-9 h-9 rounded-xl border shadow-sm transition-all ${
                     showSortMenu ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-slate-500 border-slate-200 hover:border-blue-200 hover:text-blue-600'
                 }`}
+                title="排序方式"
             >
               <Filter className="w-4 h-4" />
             </button>
             
             {showSortMenu && (
-                <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 py-1 z-50 animate-in fade-in zoom-in-95 duration-100 origin-top-left">
-                    <div className="px-4 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider">排序方式</div>
+                <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-100 py-1 z-50 animate-in fade-in zoom-in-95 duration-100 origin-top-left">
+                    <div className="px-4 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-50 mb-1">请选择</div>
                     {SORT_OPTIONS.map((opt) => (
                         <button
                             key={opt.id}

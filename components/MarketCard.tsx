@@ -8,8 +8,8 @@ interface MarketCardProps {
 }
 
 const DonutChart: React.FC<{ percentage: number }> = ({ percentage }) => {
-  const size = 72; // Increased size for better visibility
-  const strokeWidth = 5; // Slightly thinner stroke for more internal space
+  const size = 54; // Reduced size to be more coordinated
+  const strokeWidth = 4;
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
@@ -43,8 +43,8 @@ const DonutChart: React.FC<{ percentage: number }> = ({ percentage }) => {
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-        <span className={`text-lg font-bold ${colorClass} leading-none`}>{percentage}%</span>
-        <span className="text-[9px] uppercase text-slate-400 font-semibold leading-none mt-1 tracking-wide">CHANCE</span>
+        <span className={`text-sm font-bold ${colorClass} leading-none`}>{percentage}%</span>
+        <span className="text-[9px] text-slate-400 font-medium leading-none mt-0.5">chance</span>
       </div>
     </div>
   );
@@ -72,30 +72,29 @@ const MarketCard: React.FC<MarketCardProps> = ({ market }) => {
     <div className="group relative bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:border-blue-100 hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden h-full">
       
       {/* Top Section: Image + Title + Chart */}
-      <div className="p-5 flex items-start gap-4 grow">
+      <div className="p-4 flex items-start gap-3 grow">
         <img 
           src={market.iconUrl} 
           alt={market.title}
-          className="w-12 h-12 rounded-xl object-cover shadow-sm shrink-0 border border-slate-100 mt-1"
+          className="w-11 h-11 rounded-lg object-cover shadow-sm shrink-0 border border-slate-100 mt-0.5"
         />
         
-        <div className="flex-1 min-w-0 flex flex-col gap-2">
-          {/* Title - Full visibility */}
-          <h3 className="text-slate-800 font-bold leading-snug group-hover:text-blue-700 transition-colors text-[15px]">
+        <div className="flex-1 min-w-0 flex flex-col gap-1">
+          {/* Title - Truncated with ellipsis */}
+          <h3 className="text-slate-800 font-bold leading-snug group-hover:text-blue-700 transition-colors text-[15px] line-clamp-2 overflow-hidden text-ellipsis" title={market.title}>
             {market.title}
           </h3>
           
-          {/* Metadata - Wraps properly */}
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500 font-medium mt-1">
-             <span className="bg-slate-50 border border-slate-200 px-2 py-0.5 rounded text-slate-600 whitespace-nowrap flex items-center">
+          {/* Metadata - Compact */}
+          <div className="flex items-center flex-wrap gap-2 text-[11px] text-slate-400 font-medium mt-1">
+             <span className="bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded text-slate-500 whitespace-nowrap">
                 {market.volume} Vol.
              </span>
-             <span className="text-slate-300 hidden sm:inline">•</span>
-             <span className="whitespace-nowrap text-slate-400">Ends {market.endDate}</span>
+             <span className="whitespace-nowrap">Ends {market.endDate}</span>
           </div>
         </div>
 
-        <div className="shrink-0 pl-1">
+        <div className="shrink-0 pt-1">
           <DonutChart percentage={market.percentage} />
         </div>
       </div>
@@ -119,17 +118,17 @@ const MarketCard: React.FC<MarketCardProps> = ({ market }) => {
       )}
 
       {/* Actions */}
-      <div className="px-5 pb-5 mt-auto">
-        <div className="grid grid-cols-2 gap-3">
-          <button className="relative overflow-hidden flex items-center justify-center gap-2 py-2.5 rounded-xl border border-emerald-200 bg-emerald-50/50 text-emerald-700 font-bold text-sm hover:bg-emerald-100 hover:border-emerald-300 transition-all active:scale-95">
+      <div className="px-4 pb-4 mt-auto">
+        <div className="grid grid-cols-2 gap-2.5">
+          <button className="relative overflow-hidden flex items-center justify-center gap-1.5 py-2 rounded-lg border border-emerald-200 bg-emerald-50/50 text-emerald-700 font-bold text-xs hover:bg-emerald-100 hover:border-emerald-300 transition-all active:scale-95">
             <span className="relative z-10 flex items-center gap-1">
-              Buy Yes <TrendingUp className="w-3.5 h-3.5" />
+              Buy Yes <TrendingUp className="w-3 h-3" />
             </span>
           </button>
           
-          <button className="relative overflow-hidden flex items-center justify-center gap-2 py-2.5 rounded-xl border border-red-200 bg-red-50/50 text-red-700 font-bold text-sm hover:bg-red-100 hover:border-red-300 transition-all active:scale-95">
+          <button className="relative overflow-hidden flex items-center justify-center gap-1.5 py-2 rounded-lg border border-red-200 bg-red-50/50 text-red-700 font-bold text-xs hover:bg-red-100 hover:border-red-300 transition-all active:scale-95">
             <span className="relative z-10 flex items-center gap-1">
-              Buy No <TrendingDown className="w-3.5 h-3.5" />
+              Buy No <TrendingDown className="w-3 h-3" />
             </span>
           </button>
         </div>
