@@ -17,7 +17,7 @@ const App: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900">
+    <div className="min-h-screen bg-[#f8fafc] dark:bg-slate-950 dark:text-slate-100 font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900 transition-colors duration-300">
       <Header />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
@@ -38,7 +38,7 @@ const App: React.FC = () => {
           </div>
 
           {filteredMarkets.length === 0 && (
-             <div className="py-20 text-center text-slate-400">
+             <div className="py-20 text-center text-slate-400 dark:text-slate-600">
                <p>No markets found in this category.</p>
              </div>
           )}

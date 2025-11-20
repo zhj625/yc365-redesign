@@ -25,11 +25,11 @@ const MORE_CATEGORIES = [
 ];
 
 const SORT_OPTIONS = [
-  { id: 'created_at', label: '创建时间', icon: <Clock className="w-4 h-4 text-slate-400" /> },
-  { id: 'expires_at', label: '到期时间', icon: <Calendar className="w-4 h-4 text-slate-400" /> },
-  { id: 'total_volume', label: '总交易量', icon: <BarChart3 className="w-4 h-4 text-slate-400" /> },
-  { id: '24h_volume', label: '24小时交易量', icon: <Activity className="w-4 h-4 text-slate-400" /> },
-  { id: 'liquidity', label: '流动性', icon: <Droplets className="w-4 h-4 text-slate-400" /> },
+  { id: 'created_at', label: '创建时间', icon: <Clock className="w-4 h-4 text-slate-400 dark:text-slate-500" /> },
+  { id: 'expires_at', label: '到期时间', icon: <Calendar className="w-4 h-4 text-slate-400 dark:text-slate-500" /> },
+  { id: 'total_volume', label: '总交易量', icon: <BarChart3 className="w-4 h-4 text-slate-400 dark:text-slate-500" /> },
+  { id: '24h_volume', label: '24小时交易量', icon: <Activity className="w-4 h-4 text-slate-400 dark:text-slate-500" /> },
+  { id: 'liquidity', label: '流动性', icon: <Droplets className="w-4 h-4 text-slate-400 dark:text-slate-500" /> },
 ];
 
 const FilterBar: React.FC<FilterBarProps> = ({ 
@@ -63,7 +63,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
     <div className="flex flex-col gap-4 mb-6">
       
       {/* Categories - Top Level */}
-      <div className="flex items-center border-b border-slate-100 relative">
+      <div className="flex items-center border-b border-slate-100 dark:border-slate-800 relative transition-colors duration-300">
         <div className="flex items-center gap-6 overflow-x-auto no-scrollbar py-2 flex-1">
           {CATEGORIES.map((cat) => (
             <button
@@ -71,24 +71,24 @@ const FilterBar: React.FC<FilterBarProps> = ({
               onClick={() => setActiveCategory(cat.id)}
               className={`whitespace-nowrap text-sm font-semibold transition-colors relative pb-2 px-1 ${
                 activeCategory === cat.id 
-                  ? 'text-blue-600' 
-                  : 'text-slate-500 hover:text-slate-800'
+                  ? 'text-blue-600 dark:text-blue-400' 
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
               }`}
             >
               {cat.label}
               {activeCategory === cat.id && (
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 rounded-t-full"></span>
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 dark:bg-blue-400 rounded-t-full"></span>
               )}
             </button>
           ))}
         </div>
 
         {/* "More" Dropdown */}
-        <div className="relative ml-2 pl-4 border-l border-slate-100 bg-gradient-to-r from-transparent to-[#f8fafc]" ref={moreMenuRef}>
+        <div className="relative ml-2 pl-4 border-l border-slate-100 dark:border-slate-800 bg-gradient-to-r from-transparent to-[#f8fafc] dark:to-slate-950" ref={moreMenuRef}>
           <button 
             onClick={() => setShowMoreMenu(!showMoreMenu)}
             className={`text-sm font-semibold flex items-center gap-1 py-2 transition-colors ${
-              showMoreMenu || MORE_CATEGORIES.some(c => c.id === activeCategory) ? 'text-blue-600' : 'text-slate-400 hover:text-slate-600'
+              showMoreMenu || MORE_CATEGORIES.some(c => c.id === activeCategory) ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
             }`}
           >
             更多
@@ -96,7 +96,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           </button>
 
           {showMoreMenu && (
-            <div className="absolute top-full right-0 mt-1 w-40 bg-white rounded-xl shadow-xl border border-slate-100 py-1 z-50 animate-in fade-in zoom-in-95 duration-100 origin-top-right">
+            <div className="absolute top-full right-0 mt-1 w-40 bg-white dark:bg-slate-900 rounded-xl shadow-xl shadow-slate-200/50 dark:shadow-black/50 border border-slate-100 dark:border-slate-800 py-1 z-50 animate-in fade-in zoom-in-95 duration-100 origin-top-right">
               {MORE_CATEGORIES.map((cat) => (
                 <button
                   key={cat.id}
@@ -104,8 +104,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
                     setActiveCategory(cat.id);
                     setShowMoreMenu(false);
                   }}
-                  className={`w-full text-left px-4 py-2.5 text-sm hover:bg-slate-50 transition-colors flex items-center gap-2.5 ${
-                    activeCategory === cat.id ? 'text-blue-600 font-medium bg-blue-50' : 'text-slate-600'
+                  className={`w-full text-left px-4 py-2.5 text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center gap-2.5 ${
+                    activeCategory === cat.id ? 'text-blue-600 dark:text-blue-400 font-medium bg-blue-50 dark:bg-blue-900/20' : 'text-slate-600 dark:text-slate-300'
                   }`}
                 >
                   {cat.icon}
@@ -124,7 +124,9 @@ const FilterBar: React.FC<FilterBarProps> = ({
             <button 
                 onClick={() => setShowSortMenu(!showSortMenu)}
                 className={`flex items-center justify-center w-9 h-9 rounded-xl border shadow-sm transition-all ${
-                    showSortMenu ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-slate-500 border-slate-200 hover:border-blue-200 hover:text-blue-600'
+                    showSortMenu 
+                      ? 'bg-slate-800 text-white border-slate-800 dark:bg-slate-700 dark:border-slate-700' 
+                      : 'bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:border-blue-200 dark:hover:border-blue-800 hover:text-blue-600 dark:hover:text-blue-400'
                 }`}
                 title="排序方式"
             >
@@ -132,8 +134,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
             </button>
             
             {showSortMenu && (
-                <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-100 py-1 z-50 animate-in fade-in zoom-in-95 duration-100 origin-top-left">
-                    <div className="px-4 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-50 mb-1">请选择</div>
+                <div className="absolute top-full left-0 mt-2 w-56 bg-white dark:bg-slate-900 rounded-xl shadow-xl shadow-slate-200/50 dark:shadow-black/50 border border-slate-100 dark:border-slate-800 py-1 z-50 animate-in fade-in zoom-in-95 duration-100 origin-top-left">
+                    <div className="px-4 py-2 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider border-b border-slate-50 dark:border-slate-800 mb-1">请选择</div>
                     {SORT_OPTIONS.map((opt) => (
                         <button
                             key={opt.id}
@@ -141,13 +143,13 @@ const FilterBar: React.FC<FilterBarProps> = ({
                                 setCurrentSort(opt.id);
                                 setShowSortMenu(false);
                             }}
-                            className={`w-full text-left px-4 py-2.5 text-sm hover:bg-slate-50 transition-colors flex items-center gap-3 ${
-                                currentSort === opt.id ? 'text-slate-900 bg-slate-50 font-medium' : 'text-slate-600'
+                            className={`w-full text-left px-4 py-2.5 text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center gap-3 ${
+                                currentSort === opt.id ? 'text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-800 font-medium' : 'text-slate-600 dark:text-slate-400'
                             }`}
                         >
                             {opt.icon}
                             {opt.label}
-                            {currentSort === opt.id && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-blue-600"></div>}
+                            {currentSort === opt.id && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400"></div>}
                         </button>
                     ))}
                 </div>
@@ -162,8 +164,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
               onClick={() => setActiveFilter(filter.id)}
               className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all whitespace-nowrap border ${
                 activeFilter === filter.id
-                  ? 'bg-slate-800 text-white border-slate-800 shadow-md shadow-slate-800/20'
-                  : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                  ? 'bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-900 border-slate-800 dark:border-slate-200 shadow-md shadow-slate-800/20 dark:shadow-slate-200/20'
+                  : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
               }`}
             >
               {filter.label}

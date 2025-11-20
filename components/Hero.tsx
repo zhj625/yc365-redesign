@@ -74,7 +74,7 @@ const Hero: React.FC = () => {
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
 
   return (
-    <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl shadow-indigo-900/20 my-6 group h-[200px] md:h-[260px] ring-1 ring-black/5">
+    <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl shadow-indigo-900/20 dark:shadow-black/50 my-6 group h-[200px] md:h-[260px] ring-1 ring-black/5 dark:ring-white/10">
       
       {/* Slides */}
       {SLIDES.map((slide, index) => (

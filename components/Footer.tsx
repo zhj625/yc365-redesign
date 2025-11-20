@@ -3,13 +3,13 @@ import { Twitter, Send, Disc } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-white border-t border-slate-100 py-8 mt-12">
+    <footer className="bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 py-8 mt-12 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-6 text-sm text-slate-500 font-medium">
+        <div className="flex items-center gap-6 text-sm text-slate-500 dark:text-slate-400 font-medium">
           <span>YC365 © 2025</span>
-          <a href="#" className="hover:text-slate-900 transition-colors">关于我们</a>
-          <a href="#" className="hover:text-slate-900 transition-colors">文档</a>
-          <a href="#" className="hover:text-slate-900 transition-colors">服务条款</a>
+          <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">关于我们</a>
+          <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">文档</a>
+          <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">服务条款</a>
         </div>
 
         <div className="flex items-center gap-6">
