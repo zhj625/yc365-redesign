@@ -36,8 +36,8 @@ export const FILTERS: FilterTag[] = [
 export const MARKETS: Market[] = [
   {
     id: '1',
-    title: 'T1 AD Gumayusi 会在 2025 年底之前...',
-    iconUrl: 'https://picsum.photos/id/1/200/200', // Placeholder for T1 logo
+    title: 'T1 AD Gumayusi 会在 2025 年底之前与队伍成功续约吗？',
+    iconUrl: 'https://picsum.photos/id/1/200/200', 
     percentage: 32,
     volume: '$ 14K',
     category: 'sports',
@@ -45,7 +45,7 @@ export const MARKETS: Market[] = [
   },
   {
     id: '2',
-    title: '费特曼在 2027 年之前出局?',
+    title: '参议员费特曼会在 2027 年之前因为健康原因辞职离开参议院吗？',
     iconUrl: 'https://picsum.photos/id/2/200/200',
     percentage: 70,
     volume: '$ 4K',
@@ -54,7 +54,7 @@ export const MARKETS: Market[] = [
   },
   {
     id: '3',
-    title: '到 2025 年底，T1 选手 Gumayusi 还会...',
+    title: '到 2025 年底，T1 选手 Gumayusi 还会继续留在首发名单中吗？',
     iconUrl: 'https://picsum.photos/id/3/200/200',
     percentage: 80,
     volume: '$ 2K',
@@ -63,7 +63,7 @@ export const MARKETS: Market[] = [
   },
   {
     id: '4',
-    title: '到 2025 年底，T1 玩家 Faker 会选...',
+    title: '到 2025 年底，传奇选手 Faker 会正式宣布退役吗？',
     iconUrl: 'https://picsum.photos/id/4/200/200',
     percentage: 50,
     volume: '$ 2K',
@@ -72,7 +72,7 @@ export const MARKETS: Market[] = [
   },
   {
     id: '5',
-    title: '洛杉矶湖人队会在 2025 年 11 月 1...',
+    title: '洛杉矶湖人队会在 2025 年 11 月 1 日之前赢得至少 5 场连胜吗？',
     iconUrl: 'https://picsum.photos/id/5/200/200',
     percentage: 40,
     volume: '$ 5K',
@@ -81,7 +81,7 @@ export const MARKETS: Market[] = [
   },
   {
     id: '6',
-    title: 'FURIA 会在 2025 年 11 月 15 日赢...',
+    title: 'FURIA 战队会在 2025 年 11 月 15 日的国际锦标赛中夺冠吗？',
     iconUrl: 'https://picsum.photos/id/6/200/200',
     percentage: 50,
     volume: '$ 3K',
@@ -90,7 +90,7 @@ export const MARKETS: Market[] = [
   },
   {
     id: '7',
-    title: 'Vitality 能否在 2025 年 11 月 1...',
+    title: 'Vitality 战队能否在 2025 年 11 月 1 日之前保持 CSGO 世界排名第一？',
     iconUrl: 'https://picsum.photos/id/7/200/200',
     percentage: 50,
     volume: '$ 5K',
@@ -99,7 +99,7 @@ export const MARKETS: Market[] = [
   },
   {
     id: '8',
-    title: '勒布朗·詹姆斯会在本月底之前重返比...',
+    title: '勒布朗·詹姆斯会在本月底之前从伤病中恢复并重返比赛阵容吗？',
     iconUrl: 'https://picsum.photos/id/8/200/200',
     percentage: 48,
     volume: '$ 5K',
@@ -108,7 +108,7 @@ export const MARKETS: Market[] = [
   },
   {
     id: '9',
-    title: '比特币 (BTC) 会在2025年底之前...',
+    title: '比特币 (BTC) 的价格会在 2025 年底之前突破 100,000 美元大关吗？',
     iconUrl: 'https://picsum.photos/id/9/200/200',
     percentage: 37,
     volume: '$ 1M',
@@ -117,7 +117,7 @@ export const MARKETS: Market[] = [
   },
    {
     id: '10',
-    title: '毒蛇会在 2025 年底之前加入 BLG...',
+    title: '前 EDG 选手 Viper (毒蛇) 会在 2025 年底之前加入 BLG 战队吗？',
     iconUrl: 'https://picsum.photos/id/10/200/200',
     percentage: 60,
     volume: '$ 20K',
