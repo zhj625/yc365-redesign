@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { CATEGORIES, FILTERS } from '../constants';
+import { CATEGORIES_DATA, FILTERS_DATA, MORE_CATEGORIES_DATA, TRANSLATIONS } from '../constants';
 import { 
   Filter, 
   ChevronDown, 
@@ -11,32 +11,22 @@ import {
   Trophy, 
   Zap 
 } from 'lucide-react';
+import { Language } from '../types';
 
 interface FilterBarProps {
   activeCategory: string;
   setActiveCategory: (id: string) => void;
   activeFilter: string;
   setActiveFilter: (id: string) => void;
+  lang: Language;
 }
-
-const MORE_CATEGORIES = [
-  { id: 'activity', label: '活动', icon: <Zap className="w-4 h-4 text-purple-500" /> },
-  { id: 'leaderboard', label: '排行榜', icon: <Trophy className="w-4 h-4 text-yellow-500" /> },
-];
-
-const SORT_OPTIONS = [
-  { id: 'created_at', label: '创建时间', icon: <Clock className="w-4 h-4 text-slate-400 dark:text-slate-500" /> },
-  { id: 'expires_at', label: '到期时间', icon: <Calendar className="w-4 h-4 text-slate-400 dark:text-slate-500" /> },
-  { id: 'total_volume', label: '总交易量', icon: <BarChart3 className="w-4 h-4 text-slate-400 dark:text-slate-500" /> },
-  { id: '24h_volume', label: '24小时交易量', icon: <Activity className="w-4 h-4 text-slate-400 dark:text-slate-500" /> },
-  { id: 'liquidity', label: '流动性', icon: <Droplets className="w-4 h-4 text-slate-400 dark:text-slate-500" /> },
-];
 
 const FilterBar: React.FC<FilterBarProps> = ({ 
   activeCategory, 
   setActiveCategory,
   activeFilter,
-  setActiveFilter 
+  setActiveFilter,
+  lang
 }) => {
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   const [showSortMenu, setShowSortMenu] = useState(false);
@@ -44,6 +34,23 @@ const FilterBar: React.FC<FilterBarProps> = ({
   
   const moreMenuRef = useRef<HTMLDivElement>(null);
   const sortMenuRef = useRef<HTMLDivElement>(null);
+  const t = TRANSLATIONS[lang].filter;
+
+  // Get localized data
+  const categories = CATEGORIES_DATA[lang];
+  const moreCategories = MORE_CATEGORIES_DATA[lang].map(cat => ({
+    ...cat,
+    icon: cat.id === 'activity' ? <Zap className="w-4 h-4 text-purple-500" /> : <Trophy className="w-4 h-4 text-yellow-500" />
+  }));
+  const filters = FILTERS_DATA[lang];
+
+  const SORT_OPTIONS = [
+    { id: 'created_at', label: t.sortOptions.created, icon: <Clock className="w-4 h-4 text-slate-400 dark:text-slate-500" /> },
+    { id: 'expires_at', label: t.sortOptions.expiry, icon: <Calendar className="w-4 h-4 text-slate-400 dark:text-slate-500" /> },
+    { id: 'total_volume', label: t.sortOptions.totalVol, icon: <BarChart3 className="w-4 h-4 text-slate-400 dark:text-slate-500" /> },
+    { id: '24h_volume', label: t.sortOptions.vol24h, icon: <Activity className="w-4 h-4 text-slate-400 dark:text-slate-500" /> },
+    { id: 'liquidity', label: t.sortOptions.liquidity, icon: <Droplets className="w-4 h-4 text-slate-400 dark:text-slate-500" /> },
+  ];
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -65,7 +72,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
       {/* Categories - Top Level */}
       <div className="flex items-center border-b border-slate-100 dark:border-slate-800 relative transition-colors duration-300">
         <div className="flex items-center gap-6 overflow-x-auto no-scrollbar py-2 flex-1">
-          {CATEGORIES.map((cat) => (
+          {categories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
@@ -88,16 +95,16 @@ const FilterBar: React.FC<FilterBarProps> = ({
           <button 
             onClick={() => setShowMoreMenu(!showMoreMenu)}
             className={`text-sm font-semibold flex items-center gap-1 py-2 transition-colors ${
-              showMoreMenu || MORE_CATEGORIES.some(c => c.id === activeCategory) ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
+              showMoreMenu || moreCategories.some(c => c.id === activeCategory) ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
             }`}
           >
-            更多
+            {t.more}
             <ChevronDown className={`w-3 h-3 transition-transform ${showMoreMenu ? 'rotate-180' : ''}`} />
           </button>
 
           {showMoreMenu && (
             <div className="absolute top-full right-0 mt-1 w-40 bg-white dark:bg-slate-900 rounded-xl shadow-xl shadow-slate-200/50 dark:shadow-black/50 border border-slate-100 dark:border-slate-800 py-1 z-50 animate-in fade-in zoom-in-95 duration-100 origin-top-right">
-              {MORE_CATEGORIES.map((cat) => (
+              {moreCategories.map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() => {
@@ -128,14 +135,14 @@ const FilterBar: React.FC<FilterBarProps> = ({
                       ? 'bg-slate-800 text-white border-slate-800 dark:bg-slate-700 dark:border-slate-700' 
                       : 'bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:border-blue-200 dark:hover:border-blue-800 hover:text-blue-600 dark:hover:text-blue-400'
                 }`}
-                title="排序方式"
+                title={t.sortBy}
             >
               <Filter className="w-4 h-4" />
             </button>
             
             {showSortMenu && (
                 <div className="absolute top-full left-0 mt-2 w-56 bg-white dark:bg-slate-900 rounded-xl shadow-xl shadow-slate-200/50 dark:shadow-black/50 border border-slate-100 dark:border-slate-800 py-1 z-50 animate-in fade-in zoom-in-95 duration-100 origin-top-left">
-                    <div className="px-4 py-2 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider border-b border-slate-50 dark:border-slate-800 mb-1">请选择</div>
+                    <div className="px-4 py-2 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider border-b border-slate-50 dark:border-slate-800 mb-1">{t.select}</div>
                     {SORT_OPTIONS.map((opt) => (
                         <button
                             key={opt.id}
@@ -158,7 +165,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
         {/* Filters */}
         <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-1">
-          {FILTERS.map((filter) => (
+          {filters.map((filter) => (
             <button
               key={filter.id}
               onClick={() => setActiveFilter(filter.id)}

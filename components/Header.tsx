@@ -5,11 +5,19 @@ import {
   LayoutDashboard, ClipboardList, Calendar, 
   PlusCircle, PieChart, Star, Moon, Globe, Sun 
 } from 'lucide-react';
+import { Language } from '../types';
+import { TRANSLATIONS } from '../constants';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  lang: Language;
+  setLang: (lang: Language) => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ lang, setLang }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
+  const t = TRANSLATIONS[lang].header;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -32,6 +40,10 @@ const Header: React.FC = () => {
 
   const toggleTheme = () => {
     setIsDark(!isDark);
+  };
+
+  const toggleLanguage = () => {
+    setLang(lang === 'en' ? 'zh' : 'en');
   };
 
   const MenuItem = ({ icon, label, onClick }: { icon: React.ReactNode, label: string, onClick?: () => void }) => (
@@ -63,7 +75,7 @@ const Header: React.FC = () => {
             <Search className="w-4 h-4 text-slate-400 dark:text-slate-500 mr-3" />
             <input 
               type="text" 
-              placeholder="Search markets..." 
+              placeholder={t.searchPlaceholder} 
               className="bg-transparent border-none outline-none text-sm w-full text-slate-700 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 font-medium"
             />
           </div>
@@ -75,7 +87,7 @@ const Header: React.FC = () => {
           {/* Faucet - Subtle Glass Style */}
           <button className="hidden xl:flex items-center gap-2 px-3 py-1.5 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full transition-all">
             <Droplets className="w-4 h-4" />
-            <span>Faucet</span>
+            <span>{t.faucet}</span>
           </button>
 
           {/* Balance - Premium Pill Style */}
@@ -84,21 +96,15 @@ const Header: React.FC = () => {
                <Wallet className="w-4 h-4" />
             </div>
             <div className="flex flex-col justify-center h-full">
-               <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase leading-none mb-0.5 tracking-wider">Total Balance</span>
+               <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase leading-none mb-0.5 tracking-wider">{t.totalBalance}</span>
                <span className="text-sm font-bold text-slate-800 dark:text-slate-100 font-mono leading-none tracking-tight">$2,450.00</span>
             </div>
           </div>
 
-          {/* Create Event - Prominent Button */}
-          <button className="hidden lg:flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-700 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-full shadow-sm hover:shadow-md transition-all active:scale-95 mr-1 group">
-            <PlusCircle className="w-4 h-4 text-slate-400 dark:text-slate-500 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors" strokeWidth={2.5} />
-            <span>创建事件</span>
-          </button>
-
           {/* Deposit - Vibrant Gradient Action */}
           <button className="hidden sm:flex items-center gap-2 px-6 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-full shadow-lg shadow-blue-600/20 transition-all hover:-translate-y-0.5 active:translate-y-0 active:shadow-none">
             <Plus className="w-4 h-4" strokeWidth={3} />
-            <span>充值</span>
+            <span>{t.deposit}</span>
           </button>
 
           {/* Notifications */}
@@ -148,7 +154,7 @@ const Header: React.FC = () => {
                   </div>
 
                   <button className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:text-slate-900 dark:hover:text-white transition-all group shadow-sm">
-                    断开连接
+                    {t.profile.disconnect}
                     <ChevronRight className="w-4 h-4 text-slate-400 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors" />
                   </button>
                 </div>
@@ -156,30 +162,30 @@ const Header: React.FC = () => {
                 {/* Stats Grid */}
                 <div className="grid grid-cols-2 divide-x divide-slate-100 dark:divide-slate-800 border-b border-slate-100 dark:border-slate-800">
                    <div className="p-4 flex flex-col items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer group">
-                     <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors">Points</span>
+                     <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors">{t.profile.points}</span>
                      <span className="text-xl font-black text-emerald-500 dark:text-emerald-400 font-mono tracking-tight group-hover:scale-105 transition-transform">0.00</span>
                    </div>
                    <div className="p-4 flex flex-col items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer group">
-                     <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors">货币</span>
+                     <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors">{t.profile.currency}</span>
                      <span className="text-xl font-black text-emerald-500 dark:text-emerald-400 font-mono tracking-tight group-hover:scale-105 transition-transform">$0.00</span>
                    </div>
                 </div>
 
                 {/* Menu Items */}
-                <div className="p-3 max-h-[450px] overflow-y-auto custom-scrollbar space-y-1">
-                  <div className="px-3 py-1 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mt-2 mb-2">个人中心</div>
+                <div className="p-3 max-h-[450px] overflow-y-auto no-scrollbar space-y-1">
+                  <div className="px-3 py-1 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mt-2 mb-2">{t.profile.menuTitle}</div>
                   
-                  <MenuItem icon={<LayoutGrid className="w-4 h-4" />} label="概览" />
-                  <MenuItem icon={<Settings className="w-4 h-4" />} label="设置" />
-                  <MenuItem icon={<LayoutDashboard className="w-4 h-4" />} label="仪表盘" />
-                  <MenuItem icon={<ClipboardList className="w-4 h-4" />} label="我的订单" />
-                  <MenuItem icon={<Calendar className="w-4 h-4" />} label="我的事件" />
-                  <MenuItem icon={<PieChart className="w-4 h-4" />} label="我的持仓" />
-                  <MenuItem icon={<Star className="w-4 h-4" />} label="我的收藏" />
+                  <MenuItem icon={<LayoutGrid className="w-4 h-4" />} label={t.profile.overview} />
+                  <MenuItem icon={<Settings className="w-4 h-4" />} label={t.profile.settings} />
+                  <MenuItem icon={<LayoutDashboard className="w-4 h-4" />} label={t.profile.dashboard} />
+                  <MenuItem icon={<ClipboardList className="w-4 h-4" />} label={t.profile.myOrders} />
+                  <MenuItem icon={<Calendar className="w-4 h-4" />} label={t.profile.myEvents} />
+                  <MenuItem icon={<PieChart className="w-4 h-4" />} label={t.profile.myPositions} />
+                  <MenuItem icon={<Star className="w-4 h-4" />} label={t.profile.myWatchlist} />
 
                   <div className="h-px bg-slate-100 dark:bg-slate-800 my-3 mx-2"></div>
 
-                  <div className="px-3 py-1 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">主题</div>
+                  <div className="px-3 py-1 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">{t.profile.themeTitle}</div>
                   <div 
                     onClick={toggleTheme}
                     className="flex items-center justify-between px-3 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl cursor-pointer group transition-colors"
@@ -190,21 +196,27 @@ const Header: React.FC = () => {
                        ) : (
                           <Sun className="w-4 h-4 text-slate-400 group-hover:text-amber-500 transition-colors" />
                        )}
-                       切换主题
+                       {t.profile.toggleTheme}
                      </div>
                      <div className={`w-11 h-6 rounded-full relative transition-colors duration-300 cursor-pointer ${isDark ? 'bg-indigo-600' : 'bg-slate-200 hover:bg-slate-300'}`}>
                         <div className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-300 ${isDark ? 'left-6' : 'left-1'}`}></div>
                      </div>
                   </div>
 
-                   <div className="px-3 py-1 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mt-4 mb-2">语言</div>
+                   <div className="px-3 py-1 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mt-4 mb-2">{t.profile.langTitle}</div>
                    <div className="flex items-center justify-between px-3 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl cursor-pointer group transition-colors">
                      <div className="flex items-center gap-3 text-sm font-medium text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200">
                        <Globe className="w-4 h-4 text-slate-400 dark:text-slate-500 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors" />
-                       切换语言
+                       {t.profile.switchLang}
                      </div>
-                     <button className="flex items-center gap-1.5 text-xs font-bold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg shadow-sm group-hover:border-blue-200 dark:group-hover:border-blue-800 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-all">
-                       简体中文
+                     <button 
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            toggleLanguage();
+                        }}
+                        className="flex items-center gap-1.5 text-xs font-bold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg shadow-sm group-hover:border-blue-200 dark:group-hover:border-blue-800 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-all"
+                     >
+                       {t.profile.currentLang}
                        <Globe className="w-3 h-3" />
                      </button>
                   </div>
@@ -226,7 +238,7 @@ const Header: React.FC = () => {
             <Search className="w-4 h-4 text-slate-400 dark:text-slate-500 mr-3" />
             <input 
               type="text" 
-              placeholder="Search markets..." 
+              placeholder={t.searchPlaceholder}
               className="bg-transparent border-none outline-none text-sm w-full text-slate-900 dark:text-slate-100 font-medium"
             />
           </div>
@@ -236,12 +248,12 @@ const Header: React.FC = () => {
                     <Wallet className="w-4 h-4" />
                 </div>
                 <div className="flex flex-col">
-                    <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Total Balance</span>
+                    <span className="text-xs font-medium text-slate-500 dark:text-slate-400">{t.mobile.balance}</span>
                     <span className="text-sm font-bold text-slate-900 dark:text-slate-100 font-mono">$ 2,450.00</span>
                 </div>
              </div>
              <button className="px-4 py-1.5 bg-blue-600 text-white text-xs font-bold rounded-lg shadow-blue-200 dark:shadow-none">
-                充值
+                {t.mobile.deposit}
              </button>
           </div>
       </div>

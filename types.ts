@@ -1,5 +1,7 @@
 import React from 'react';
 
+export type Language = 'en' | 'zh';
+
 export interface Market {
   id: string;
   title: string;
