@@ -59,7 +59,9 @@ export const TRANSLATIONS = {
       buyNo: "Buy No",
       chance: "chance",
       aiAnalysis: "Gemini Analysis",
-      askAi: "Ask AI"
+      askAi: "Ask AI",
+      participants: "Traders",
+      comments: "Comments"
     },
     fab: {
       new: "New",
@@ -123,7 +125,9 @@ export const TRANSLATIONS = {
       buyNo: "买入 否",
       chance: "概率",
       aiAnalysis: "Gemini 智能分析",
-      askAi: "AI 分析"
+      askAi: "AI 分析",
+      participants: "人参与",
+      comments: "评论"
     },
     fab: {
       new: "新",
@@ -202,6 +206,12 @@ export const FILTERS_DATA: Record<Language, FilterTag[]> = {
   ]
 };
 
+const mockTraders = [
+    "https://picsum.photos/id/100/30/30",
+    "https://picsum.photos/id/101/30/30",
+    "https://picsum.photos/id/102/30/30"
+];
+
 export const MARKETS_DATA: Record<Language, Market[]> = {
   en: [
     {
@@ -211,7 +221,11 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       percentage: 32,
       volume: '$ 14K',
       category: 'sports',
-      endDate: 'Dec 31, 2025'
+      endDate: 'Dec 31, 2025',
+      traders: mockTraders,
+      commentCount: 42,
+      change24h: -2.5,
+      isHot: true
     },
     {
       id: '2',
@@ -220,7 +234,10 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       percentage: 70,
       volume: '$ 4K',
       category: 'politics',
-      endDate: 'Jan 1, 2027'
+      endDate: 'Jan 1, 2027',
+      traders: mockTraders,
+      commentCount: 12,
+      change24h: 5.1
     },
     {
       id: '3',
@@ -229,7 +246,10 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       percentage: 80,
       volume: '$ 2K',
       category: 'sports',
-      endDate: 'Dec 31, 2025'
+      endDate: 'Dec 31, 2025',
+      traders: mockTraders,
+      commentCount: 8,
+      change24h: 1.2
     },
     {
       id: '4',
@@ -238,7 +258,11 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       percentage: 50,
       volume: '$ 2K',
       category: 'sports',
-      endDate: 'Dec 31, 2025'
+      endDate: 'Dec 31, 2025',
+      traders: mockTraders,
+      commentCount: 156,
+      change24h: 12.5,
+      isHot: true
     },
     {
       id: '5',
@@ -247,7 +271,10 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       percentage: 40,
       volume: '$ 5K',
       category: 'sports',
-      endDate: 'Nov 1, 2025'
+      endDate: 'Nov 1, 2025',
+      traders: mockTraders,
+      commentCount: 23,
+      change24h: -0.8
     },
     {
       id: '6',
@@ -256,7 +283,10 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       percentage: 50,
       volume: '$ 3K',
       category: 'sports',
-      endDate: 'Nov 15, 2025'
+      endDate: 'Nov 15, 2025',
+      traders: mockTraders,
+      commentCount: 5,
+      change24h: 0
     },
     {
       id: '7',
@@ -265,7 +295,10 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       percentage: 50,
       volume: '$ 5K',
       category: 'sports',
-      endDate: 'Nov 1, 2025'
+      endDate: 'Nov 1, 2025',
+      traders: mockTraders,
+      commentCount: 18,
+      change24h: 3.2
     },
     {
       id: '8',
@@ -274,7 +307,10 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       percentage: 48,
       volume: '$ 5K',
       category: 'sports',
-      endDate: 'Oct 31, 2025'
+      endDate: 'Oct 31, 2025',
+      traders: mockTraders,
+      commentCount: 67,
+      change24h: -5.4
     },
     {
       id: '9',
@@ -283,7 +319,11 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       percentage: 37,
       volume: '$ 1M',
       category: 'crypto',
-      endDate: 'Dec 31, 2025'
+      endDate: 'Dec 31, 2025',
+      traders: mockTraders,
+      commentCount: 892,
+      change24h: 15.2,
+      isHot: true
     },
     {
       id: '10',
@@ -292,7 +332,10 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       percentage: 60,
       volume: '$ 20K',
       category: 'sports',
-      endDate: 'Dec 31, 2025'
+      endDate: 'Dec 31, 2025',
+      traders: mockTraders,
+      commentCount: 34,
+      change24h: 2.1
     },
   ],
   zh: [
@@ -303,7 +346,11 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       percentage: 32,
       volume: '$ 14K',
       category: 'sports',
-      endDate: 'Dec 31, 2025'
+      endDate: 'Dec 31, 2025',
+      traders: mockTraders,
+      commentCount: 42,
+      change24h: -2.5,
+      isHot: true
     },
     {
       id: '2',
@@ -312,7 +359,10 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       percentage: 70,
       volume: '$ 4K',
       category: 'politics',
-      endDate: 'Jan 1, 2027'
+      endDate: 'Jan 1, 2027',
+      traders: mockTraders,
+      commentCount: 12,
+      change24h: 5.1
     },
     {
       id: '3',
@@ -321,7 +371,10 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       percentage: 80,
       volume: '$ 2K',
       category: 'sports',
-      endDate: 'Dec 31, 2025'
+      endDate: 'Dec 31, 2025',
+      traders: mockTraders,
+      commentCount: 8,
+      change24h: 1.2
     },
     {
       id: '4',
@@ -330,7 +383,11 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       percentage: 50,
       volume: '$ 2K',
       category: 'sports',
-      endDate: 'Dec 31, 2025'
+      endDate: 'Dec 31, 2025',
+      traders: mockTraders,
+      commentCount: 156,
+      change24h: 12.5,
+      isHot: true
     },
     {
       id: '5',
@@ -339,7 +396,10 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       percentage: 40,
       volume: '$ 5K',
       category: 'sports',
-      endDate: 'Nov 1, 2025'
+      endDate: 'Nov 1, 2025',
+      traders: mockTraders,
+      commentCount: 23,
+      change24h: -0.8
     },
     {
       id: '6',
@@ -348,7 +408,10 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       percentage: 50,
       volume: '$ 3K',
       category: 'sports',
-      endDate: 'Nov 15, 2025'
+      endDate: 'Nov 15, 2025',
+      traders: mockTraders,
+      commentCount: 5,
+      change24h: 0
     },
     {
       id: '7',
@@ -357,7 +420,10 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       percentage: 50,
       volume: '$ 5K',
       category: 'sports',
-      endDate: 'Nov 1, 2025'
+      endDate: 'Nov 1, 2025',
+      traders: mockTraders,
+      commentCount: 18,
+      change24h: 3.2
     },
     {
       id: '8',
@@ -366,7 +432,10 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       percentage: 48,
       volume: '$ 5K',
       category: 'sports',
-      endDate: 'Oct 31, 2025'
+      endDate: 'Oct 31, 2025',
+      traders: mockTraders,
+      commentCount: 67,
+      change24h: -5.4
     },
     {
       id: '9',
@@ -375,7 +444,11 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       percentage: 37,
       volume: '$ 1M',
       category: 'crypto',
-      endDate: 'Dec 31, 2025'
+      endDate: 'Dec 31, 2025',
+      traders: mockTraders,
+      commentCount: 892,
+      change24h: 15.2,
+      isHot: true
     },
      {
       id: '10',
@@ -384,7 +457,10 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       percentage: 60,
       volume: '$ 20K',
       category: 'sports',
-      endDate: 'Dec 31, 2025'
+      endDate: 'Dec 31, 2025',
+      traders: mockTraders,
+      commentCount: 34,
+      change24h: 2.1
     },
   ]
 };

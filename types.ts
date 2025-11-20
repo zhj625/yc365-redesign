@@ -10,6 +10,11 @@ export interface Market {
   volume: string; // e.g., "$ 14K Vol."
   category: string;
   endDate: string;
+  // Social proof & trends
+  traders?: string[]; // Array of avatar URLs
+  commentCount?: number;
+  change24h?: number; // Percentage change, e.g., 12 or -5
+  isHot?: boolean;
 }
 
 export interface Category {

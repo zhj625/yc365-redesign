@@ -54,23 +54,23 @@ const App: React.FC = () => {
 
       <Footer />
 
-      {/* Floating Action Button (FAB) - Refined Color Scheme */}
+      {/* Floating Action Button (FAB) - Solid Gradient Style */}
       <div className="fixed bottom-8 right-8 z-50 animate-in slide-in-from-bottom-4 fade-in duration-700 delay-500">
-        <button className="group relative flex items-center gap-3 pl-2 pr-6 py-2 bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl border border-slate-200/60 dark:border-slate-700/60 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_20px_40px_-5px_rgba(37,99,235,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] dark:hover:shadow-[0_20px_40px_-5px_rgba(37,99,235,0.2)] transition-all duration-300 hover:-translate-y-1.5 active:scale-95">
+        <button className="group relative flex items-center gap-3 pl-3 pr-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-full shadow-[0_8px_30px_rgba(37,99,235,0.3)] hover:shadow-[0_20px_40px_-5px_rgba(37,99,235,0.5)] transition-all duration-300 hover:-translate-y-1 active:scale-95 ring-1 ring-white/20">
             
-            {/* Icon Container - Brand Blue Gradient */}
-            <div className="flex items-center justify-center w-11 h-11 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-full text-white shadow-lg shadow-blue-500/20 group-hover:scale-110 group-hover:rotate-90 transition-all duration-300 ease-out">
-               <Plus className="w-6 h-6" strokeWidth={3} />
+            {/* Icon Container */}
+            <div className="flex items-center justify-center w-8 h-8 bg-white/20 rounded-full backdrop-blur-sm group-hover:rotate-90 transition-transform duration-300">
+               <Plus className="w-5 h-5 text-white" strokeWidth={3} />
             </div>
 
             {/* Text Container */}
             <div className="flex flex-col items-start gap-0.5">
-                <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors">{t.fab.new}</span>
-                <span className="text-base font-black tracking-wide text-slate-800 dark:text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-cyan-500 dark:group-hover:from-blue-400 dark:group-hover:to-cyan-300 transition-all">{t.fab.create}</span>
+                <span className="text-[10px] font-bold text-blue-100 uppercase tracking-widest leading-none">{t.fab.new}</span>
+                <span className="text-sm font-black tracking-wide text-white leading-none">{t.fab.create}</span>
             </div>
             
-            {/* Subtle Shine Effect */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/0 via-white/0 to-white/20 dark:to-white/5 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
+            {/* Shine Effect */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/0 via-white/0 to-white/10 pointer-events-none" />
         </button>
       </div>
     </div>
