@@ -75,6 +75,20 @@ export const TRANSLATIONS = {
       about: "About Us",
       docs: "Docs",
       terms: "Terms"
+    },
+    detail: {
+      back: "Back",
+      outcome: "Outcome",
+      price: "Price",
+      buy: "Buy",
+      sell: "Sell",
+      amount: "Amount",
+      shares: "Shares",
+      potentialReturn: "Potential Return",
+      placeOrder: "Place Order",
+      rules: "Rules",
+      rulesDesc: "Market rules will be displayed here.",
+      comments: "Comments"
     }
   },
   zh: {
@@ -141,6 +155,20 @@ export const TRANSLATIONS = {
       about: "关于我们",
       docs: "文档",
       terms: "服务条款"
+    },
+    detail: {
+      back: "返回",
+      outcome: "预测结果",
+      price: "价格",
+      buy: "买入",
+      sell: "卖出",
+      amount: "数量",
+      shares: "份额",
+      potentialReturn: "潜在回报",
+      placeOrder: "下单",
+      rules: "规则",
+      rulesDesc: "此处将显示市场规则。",
+      comments: "评论"
     }
   }
 };
@@ -170,10 +198,12 @@ export const CATEGORIES_DATA: Record<Language, Category[]> = {
 
 export const MORE_CATEGORIES_DATA: Record<Language, Category[]> = {
   en: [
-    { id: 'activity', label: 'Activity', icon: null }, // Icon is handled in component
+    { id: 'hot', label: 'Hot Events', icon: null },
+    { id: 'activity', label: 'Activity', icon: null },
     { id: 'leaderboard', label: 'Leaderboard', icon: null },
   ],
   zh: [
+    { id: 'hot', label: '热门事件', icon: null },
     { id: 'activity', label: '活动', icon: null },
     { id: 'leaderboard', label: '排行榜', icon: null },
   ]

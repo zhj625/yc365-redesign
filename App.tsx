@@ -3,6 +3,7 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import FilterBar from './components/FilterBar';
 import MarketCard from './components/MarketCard';
+import MarketDetail from './components/MarketDetail';
 import MarketCardSkeleton from './components/MarketCardSkeleton';
 import Toast, { ToastProps } from './components/Toast';
 import Footer from './components/Footer';
@@ -17,6 +18,10 @@ const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [lang, setLang] = useState<Language>('en');
   
+  // Navigation State
+  const [view, setView] = useState<'list' | 'detail'>('list');
+  const [selectedMarket, setSelectedMarket] = useState<Market | null>(null);
+
   // Loading State
   const [isLoading, setIsLoading] = useState(true);
   
@@ -26,16 +31,14 @@ const App: React.FC = () => {
   const markets = MARKETS_DATA[lang];
   const t = TRANSLATIONS[lang];
 
-  // Simulated Loading Effect when switching categories
   useEffect(() => {
     setIsLoading(true);
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 800); // 800ms simulated delay
+    }, 800);
     return () => clearTimeout(timer);
   }, [activeCategory, activeFilter, currentSort, lang]);
 
-  // Toast Handler
   const addToast = (message: string, type: 'success' | 'error' = 'success') => {
     const id = Date.now().toString();
     setToasts(prev => [...prev, { id, message, type, onClose: removeToast }]);
@@ -45,7 +48,27 @@ const App: React.FC = () => {
     setToasts(prev => prev.filter(toast => toast.id !== id));
   };
 
-  // --- LOGIC ENGINE ---
+  const handleMarketClick = (market: Market) => {
+      setSelectedMarket(market);
+      setView('detail');
+      window.scrollTo(0, 0);
+  };
+
+  const handleBack = () => {
+      setView('list');
+      setSelectedMarket(null);
+  };
+
+  const handleCategoryChange = (id: string) => {
+    setActiveCategory(id);
+    if (view === 'detail') setView('list');
+  };
+
+  const handleFilterChange = (id: string) => {
+    setActiveFilter(id);
+    if (view === 'detail') setView('list');
+  };
+
   const getFilteredAndSortedMarkets = (): Market[] => {
     let result = [...markets];
 
@@ -56,15 +79,14 @@ const App: React.FC = () => {
     }
 
     // 2. Category Filter
-    if (activeCategory !== 'all') {
+    if (activeCategory === 'hot') {
+        result = result.filter(m => m.isHot);
+    } else if (activeCategory !== 'all') {
       result = result.filter(m => m.category === activeCategory);
     }
 
     // 3. Tag Filter (activeFilter)
     if (activeFilter !== 'all') {
-       // Check if market has the tag. Tags are stored in 'tags' array in Market interface
-       // Since 'all' is default, any other ID is a tag ID (e.g., 'ai', 'sports')
-       // We map the filter ID to what we expect in the data.
        result = result.filter(m => m.tags && m.tags.includes(activeFilter));
     }
 
@@ -72,24 +94,18 @@ const App: React.FC = () => {
     result.sort((a, b) => {
       switch (currentSort) {
         case 'total_volume':
-          // Parse "$ 14K" -> 14000
           const getVol = (s: string) => {
             if (s.includes('M')) return parseFloat(s.replace(/[^0-9.]/g, '')) * 1000000;
             if (s.includes('K')) return parseFloat(s.replace(/[^0-9.]/g, '')) * 1000;
             return parseFloat(s.replace(/[^0-9.]/g, ''));
           };
           return getVol(b.volume) - getVol(a.volume);
-        
         case '24h_volume':
-           // Mock sort for 24h vol (using same volume for now or random factor if not present)
            return (b.change24h || 0) - (a.change24h || 0);
-
         case 'expires_at':
           return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
-        
         case 'created_at':
         default:
-          // Use ID as proxy for creation time (descending)
           return parseInt(b.id) - parseInt(a.id);
       }
     });
@@ -108,71 +124,86 @@ const App: React.FC = () => {
         setSearchQuery={setSearchQuery}
       />
       
-      {/* Toast Container */}
       <div className="fixed top-24 right-4 z-[100] flex flex-col gap-3 pointer-events-none">
         {toasts.map(toast => (
           <Toast key={toast.id} {...toast} />
         ))}
       </div>
       
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-        <Hero lang={lang} />
+      {/* Reduced top padding for main container */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 pt-4">
         
-        <div className="mt-8">
-          <FilterBar 
-            activeCategory={activeCategory} 
-            setActiveCategory={setActiveCategory}
-            activeFilter={activeFilter}
-            setActiveFilter={setActiveFilter}
-            lang={lang}
-            currentSort={currentSort}
-            setCurrentSort={setCurrentSort}
-          />
-          
-          {/* Market Grid with Loading State */}
-          {isLoading ? (
-             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
-                {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                  <MarketCardSkeleton key={i} />
-                ))}
-             </div>
-          ) : (
-             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6 animate-in fade-in zoom-in-95 duration-500">
-                {filteredMarkets.length > 0 ? (
-                  filteredMarkets.map((market) => (
-                    <div key={market.id} onClick={() => {}}>
-                       <MarketCard market={market} lang={lang} />
+        {view === 'list' && <Hero lang={lang} />}
+        
+        {/* Dynamic margin: mt-8 for list (space after Hero), mt-0 for detail (tight to filter bar) */}
+        <div className={view === 'list' ? "mt-8" : "mt-0"}>
+            <FilterBar 
+                activeCategory={activeCategory} 
+                setActiveCategory={handleCategoryChange}
+                activeFilter={activeFilter}
+                setActiveFilter={handleFilterChange}
+                lang={lang}
+                currentSort={currentSort}
+                setCurrentSort={setCurrentSort}
+                hideFilters={view === 'detail'}
+            />
+            
+            {view === 'list' ? (
+                isLoading ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
+                        {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                        <MarketCardSkeleton key={i} />
+                        ))}
                     </div>
-                  ))
                 ) : (
-                  <div className="col-span-full py-20 text-center flex flex-col items-center justify-center text-slate-400 dark:text-slate-600">
-                     <p className="text-lg font-medium">{t.common.noMarkets}</p>
-                     <p className="text-sm mt-2">Try adjusting your filters or search query.</p>
-                  </div>
-                )}
-             </div>
-          )}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6 animate-in fade-in zoom-in-95 duration-500">
+                        {filteredMarkets.length > 0 ? (
+                        filteredMarkets.map((market) => (
+                            <div key={market.id} onClick={() => handleMarketClick(market)} className="cursor-pointer">
+                                <MarketCard market={market} lang={lang} />
+                            </div>
+                        ))
+                        ) : (
+                        <div className="col-span-full py-20 text-center flex flex-col items-center justify-center text-slate-400 dark:text-slate-600">
+                            <p className="text-lg font-medium">{t.common.noMarkets}</p>
+                        </div>
+                        )}
+                    </div>
+                )
+            ) : (
+                selectedMarket && (
+                    <div className="mt-4">
+                        <MarketDetail 
+                            market={selectedMarket} 
+                            lang={lang} 
+                            onBack={handleBack} 
+                            onAddToast={addToast}
+                        />
+                    </div>
+                )
+            )}
         </div>
       </main>
 
       <Footer />
 
-      {/* Floating Action Button (FAB) */}
-      <div className="fixed bottom-8 right-8 z-50 animate-in slide-in-from-bottom-4 fade-in duration-700 delay-500">
-        <button 
-           onClick={() => addToast("Opening Event Creator...", "success")}
-           className="group relative flex items-center gap-3 pl-3 pr-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-full shadow-[0_8px_30px_rgba(37,99,235,0.3)] hover:shadow-[0_20px_40px_-5px_rgba(37,99,235,0.5)] transition-all duration-300 hover:-translate-y-1 active:scale-95 ring-1 ring-white/20"
-        >
-            <div className="flex items-center justify-center w-8 h-8 bg-white/20 rounded-full backdrop-blur-sm group-hover:rotate-90 transition-transform duration-300">
-               <Plus className="w-5 h-5 text-white" strokeWidth={3} />
-            </div>
-            <div className="flex flex-col items-start gap-0.5">
-                <span className="text-[10px] font-bold text-blue-100 uppercase tracking-widest leading-none">{t.fab.new}</span>
-                <span className="text-sm font-black tracking-wide text-white leading-none">{t.fab.create}</span>
-            </div>
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/0 via-white/0 to-white/10 pointer-events-none" />
-        </button>
-      </div>
+      {view === 'list' && (
+        <div className="fixed bottom-8 right-8 z-50 animate-in slide-in-from-bottom-4 fade-in duration-700 delay-500">
+            <button 
+            onClick={() => addToast("Opening Event Creator...", "success")}
+            className="group relative flex items-center gap-3 pl-3 pr-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-full shadow-[0_8px_30px_rgba(37,99,235,0.3)] hover:shadow-[0_20px_40px_-5px_rgba(37,99,235,0.5)] transition-all duration-300 hover:-translate-y-1 active:scale-95 ring-1 ring-white/20"
+            >
+                <div className="flex items-center justify-center w-8 h-8 bg-white/20 rounded-full backdrop-blur-sm group-hover:rotate-90 transition-transform duration-300">
+                <Plus className="w-5 h-5 text-white" strokeWidth={3} />
+                </div>
+                <div className="flex flex-col items-start gap-0.5">
+                    <span className="text-[10px] font-bold text-blue-100 uppercase tracking-widest leading-none">{t.fab.new}</span>
+                    <span className="text-sm font-black tracking-wide text-white leading-none">{t.fab.create}</span>
+                </div>
+                <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/0 via-white/0 to-white/10 pointer-events-none" />
+            </button>
+        </div>
+      )}
     </div>
   );
 };

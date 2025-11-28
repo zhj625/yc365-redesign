@@ -16,6 +16,7 @@ export interface Market {
   change24h?: number; // Percentage change, e.g., 12 or -5
   isHot?: boolean;
   tags?: string[]; // New: For filtering by specific tags like 'trump', 'ai'
+  rules?: string;
 }
 
 export interface Category {
