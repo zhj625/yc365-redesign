@@ -19,6 +19,8 @@ interface FilterBarProps {
   activeFilter: string;
   setActiveFilter: (id: string) => void;
   lang: Language;
+  currentSort: string;
+  setCurrentSort: (sort: string) => void;
 }
 
 const FilterBar: React.FC<FilterBarProps> = ({ 
@@ -26,11 +28,12 @@ const FilterBar: React.FC<FilterBarProps> = ({
   setActiveCategory,
   activeFilter,
   setActiveFilter,
-  lang
+  lang,
+  currentSort,
+  setCurrentSort
 }) => {
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   const [showSortMenu, setShowSortMenu] = useState(false);
-  const [currentSort, setCurrentSort] = useState('created_at');
   
   const moreMenuRef = useRef<HTMLDivElement>(null);
   const sortMenuRef = useRef<HTMLDivElement>(null);

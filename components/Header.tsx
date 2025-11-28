@@ -3,7 +3,7 @@ import {
   Search, Droplets, Plus, Wallet, Menu, Bell, 
   Copy, ChevronRight, LayoutGrid, Settings, 
   LayoutDashboard, ClipboardList, Calendar, 
-  PlusCircle, PieChart, Star, Moon, Globe, Sun 
+  PieChart, Star, Moon, Globe, Sun 
 } from 'lucide-react';
 import { Language } from '../types';
 import { TRANSLATIONS } from '../constants';
@@ -11,9 +11,11 @@ import { TRANSLATIONS } from '../constants';
 interface HeaderProps {
   lang: Language;
   setLang: (lang: Language) => void;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ lang, setLang }) => {
+const Header: React.FC<HeaderProps> = ({ lang, setLang, searchQuery, setSearchQuery }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
@@ -62,11 +64,12 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang }) => {
         
         {/* Left: Logo & Desktop Search */}
         <div className="flex items-center gap-8 flex-1">
-          <div className="flex items-center gap-2 cursor-pointer group">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center text-white font-black italic text-lg shadow-lg shadow-blue-600/20 group-hover:scale-105 transition-transform">
-              Y
+          {/* LOGO */}
+          <div className="flex items-center gap-3 cursor-pointer group select-none">
+            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black italic text-2xl shadow-lg shadow-blue-600/20 group-hover:scale-105 transition-transform duration-300">
+              <span className="pr-0.5 pt-0.5">Y</span>
             </div>
-            <span className="text-2xl font-black italic tracking-tighter text-slate-800 dark:text-white transition-colors">
+            <span className="text-[26px] font-black italic tracking-tighter text-slate-900 dark:text-white transition-colors leading-none mt-0.5">
               YC<span className="text-blue-600 dark:text-blue-500">365</span>
             </span>
           </div>
@@ -77,6 +80,8 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang }) => {
               type="text" 
               placeholder={t.searchPlaceholder} 
               className="bg-transparent border-none outline-none text-sm w-full text-slate-700 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 font-medium"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
         </div>
@@ -240,6 +245,8 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang }) => {
               type="text" 
               placeholder={t.searchPlaceholder}
               className="bg-transparent border-none outline-none text-sm w-full text-slate-900 dark:text-slate-100 font-medium"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
           <div className="flex items-center justify-between bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">

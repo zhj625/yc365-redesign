@@ -13,7 +13,8 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
       en: [
         {
             id: 1,
-            image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=2000&q=80",
+            // Reverted to 3D/Tech Abstract (Blue/Dark)
+            image: "https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=2000&q=80",
             title: (
               <>
                 Predict. Create. <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Earn.</span>
@@ -22,12 +23,13 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
             subtitle: "The decentralized prediction market. Build your own outcome tokens today.",
             cta: "Create Market",
             readMore: "Read Docs",
-            bgGradient: "from-[#020617]/95 via-[#1e1b4b]/90 to-transparent",
+            bgGradient: "from-[#020617]/80 via-[#1e1b4b]/60 to-transparent",
             badge: { icon: <Zap className="w-3 h-3 text-cyan-300" />, text: "Web3 Powered" }
           },
           {
             id: 4,
-            image: "https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=2000&q=80", 
+            // Reverted to Tech/Cyberpunk Abstract (Purple)
+            image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=2000&q=80", 
             title: (
               <>
                 Invite Friends. <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400">Get Yield.</span>
@@ -36,11 +38,12 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
             subtitle: "Earn 5% lifetime commissions on every trade your referrals make. Smart contracts enabled.",
             cta: "Get Referral Link",
             readMore: "Read Docs",
-            bgGradient: "from-[#2e1065]/95 via-[#4c1d95]/80 to-transparent", 
+            bgGradient: "from-[#2e1065]/80 via-[#4c1d95]/60 to-transparent", 
             badge: { icon: <Gift className="w-3 h-3 text-pink-300" />, text: "Partner Program" }
           },
           {
             id: 2,
+            // Reverted to Digital Earth/Network (Green/Teal)
             image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=2000&q=80",
             title: (
               <>
@@ -50,11 +53,12 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
             subtitle: "Trade on breaking news, sports, and crypto prices with instant settlement.",
             cta: "Explore Markets",
             readMore: "Read Docs",
-            bgGradient: "from-[#022c22]/95 via-[#0f766e]/80 to-transparent",
+            bgGradient: "from-[#022c22]/80 via-[#0f766e]/60 to-transparent",
             badge: { icon: <Globe2 className="w-3 h-3 text-emerald-300" />, text: "Live Oracle Feed" }
           },
           {
             id: 3,
+            // Reverted to AI/Neural Network (Indigo/Violet)
             image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=2000&q=80",
             title: (
               <>
@@ -64,14 +68,14 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
             subtitle: "Leverage Gemini AI to analyze market sentiment and volume trends.",
             cta: "View Analytics",
             readMore: "Read Docs",
-            bgGradient: "from-[#172554]/95 via-[#1e3a8a]/80 to-transparent",
+            bgGradient: "from-[#172554]/80 via-[#1e3a8a]/60 to-transparent",
             badge: { icon: <BrainCircuit className="w-3 h-3 text-violet-300" />, text: "Gemini Integrated" }
           }
       ],
       zh: [
         {
             id: 1,
-            image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=2000&q=80",
+            image: "https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=2000&q=80",
             title: (
               <>
                 预测. 创造. <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">收益.</span>
@@ -80,12 +84,12 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
             subtitle: "去中心化预测市场。立即构建您自己的结果代币。",
             cta: "创建市场",
             readMore: "阅读文档",
-            bgGradient: "from-[#020617]/95 via-[#1e1b4b]/90 to-transparent",
+            bgGradient: "from-[#020617]/80 via-[#1e1b4b]/60 to-transparent",
             badge: { icon: <Zap className="w-3 h-3 text-cyan-300" />, text: "Web3 驱动" }
           },
           {
             id: 4,
-            image: "https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&w=2000&q=80", 
+            image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=2000&q=80", 
             title: (
               <>
                 邀请好友. <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400">获得收益.</span>
@@ -94,7 +98,7 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
             subtitle: "您的推荐人每进行一笔交易，您即可获得 5% 的终身佣金。智能合约支持。",
             cta: "获取推荐链接",
             readMore: "阅读文档",
-            bgGradient: "from-[#2e1065]/95 via-[#4c1d95]/80 to-transparent",
+            bgGradient: "from-[#2e1065]/80 via-[#4c1d95]/60 to-transparent",
             badge: { icon: <Gift className="w-3 h-3 text-pink-300" />, text: "合伙人计划" }
           },
           {
@@ -108,7 +112,7 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
             subtitle: "对突发新闻、体育赛事和加密货币价格进行即时结算交易。",
             cta: "探索市场",
             readMore: "阅读文档",
-            bgGradient: "from-[#022c22]/95 via-[#0f766e]/80 to-transparent",
+            bgGradient: "from-[#022c22]/80 via-[#0f766e]/60 to-transparent",
             badge: { icon: <Globe2 className="w-3 h-3 text-emerald-300" />, text: "实时预言机" }
           },
           {
@@ -122,7 +126,7 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
             subtitle: "利用 Gemini AI 分析市场情绪和交易量趋势。",
             cta: "查看分析",
             readMore: "阅读文档",
-            bgGradient: "from-[#172554]/95 via-[#1e3a8a]/80 to-transparent",
+            bgGradient: "from-[#172554]/80 via-[#1e3a8a]/60 to-transparent",
             badge: { icon: <BrainCircuit className="w-3 h-3 text-violet-300" />, text: "集成 Gemini" }
           }
       ]
@@ -141,7 +145,7 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + activeSlides.length) % activeSlides.length);
 
   return (
-    <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl shadow-indigo-900/20 dark:shadow-black/50 my-6 group h-[200px] md:h-[260px] ring-1 ring-black/5 dark:ring-white/10">
+    <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl shadow-indigo-900/20 dark:shadow-black/50 my-6 group h-[200px] md:h-[260px] ring-1 ring-black/5 dark:ring-white/10 bg-slate-900">
       
       {/* Slides */}
       {activeSlides.map((slide, index) => (
@@ -151,11 +155,11 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
             index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
           }`}
         >
-          {/* Background Image with slight scale effect */}
-          <div className={`absolute inset-0 w-full h-full transition-transform duration-[6000ms] ease-linear ${index === currentSlide ? 'scale-110' : 'scale-100'}`}>
+          {/* Background Image with slight scale effect - Added bg-slate-900 fallback */}
+          <div className={`absolute inset-0 w-full h-full bg-slate-900 transition-transform duration-[6000ms] ease-linear ${index === currentSlide ? 'scale-110' : 'scale-100'}`}>
              <img 
                 src={slide.image} 
-                alt="Hero Background" 
+                alt="" 
                 className="w-full h-full object-cover"
               />
           </div>

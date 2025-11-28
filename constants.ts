@@ -225,7 +225,8 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       traders: mockTraders,
       commentCount: 42,
       change24h: -2.5,
-      isHot: true
+      isHot: true,
+      tags: ['sports', 'esports']
     },
     {
       id: '2',
@@ -237,7 +238,8 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       endDate: 'Jan 1, 2027',
       traders: mockTraders,
       commentCount: 12,
-      change24h: 5.1
+      change24h: 5.1,
+      tags: ['politics', 'election']
     },
     {
       id: '3',
@@ -249,7 +251,8 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       endDate: 'Dec 31, 2025',
       traders: mockTraders,
       commentCount: 8,
-      change24h: 1.2
+      change24h: 1.2,
+      tags: ['sports', 'esports']
     },
     {
       id: '4',
@@ -262,7 +265,8 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       traders: mockTraders,
       commentCount: 156,
       change24h: 12.5,
-      isHot: true
+      isHot: true,
+      tags: ['sports', 'esports']
     },
     {
       id: '5',
@@ -274,7 +278,8 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       endDate: 'Nov 1, 2025',
       traders: mockTraders,
       commentCount: 23,
-      change24h: -0.8
+      change24h: -0.8,
+      tags: ['sports', 'basketball']
     },
     {
       id: '6',
@@ -286,7 +291,8 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       endDate: 'Nov 15, 2025',
       traders: mockTraders,
       commentCount: 5,
-      change24h: 0
+      change24h: 0,
+      tags: ['sports', 'esports']
     },
     {
       id: '7',
@@ -298,7 +304,8 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       endDate: 'Nov 1, 2025',
       traders: mockTraders,
       commentCount: 18,
-      change24h: 3.2
+      change24h: 3.2,
+      tags: ['sports', 'esports']
     },
     {
       id: '8',
@@ -310,7 +317,8 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       endDate: 'Oct 31, 2025',
       traders: mockTraders,
       commentCount: 67,
-      change24h: -5.4
+      change24h: -5.4,
+      tags: ['sports', 'basketball']
     },
     {
       id: '9',
@@ -323,7 +331,8 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       traders: mockTraders,
       commentCount: 892,
       change24h: 15.2,
-      isHot: true
+      isHot: true,
+      tags: ['crypto', 'bitcoin']
     },
     {
       id: '10',
@@ -335,7 +344,8 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       endDate: 'Dec 31, 2025',
       traders: mockTraders,
       commentCount: 34,
-      change24h: 2.1
+      change24h: 2.1,
+      tags: ['sports', 'esports']
     },
   ],
   zh: [
@@ -350,7 +360,8 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       traders: mockTraders,
       commentCount: 42,
       change24h: -2.5,
-      isHot: true
+      isHot: true,
+      tags: ['sports', 'esports']
     },
     {
       id: '2',
@@ -362,7 +373,8 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       endDate: 'Jan 1, 2027',
       traders: mockTraders,
       commentCount: 12,
-      change24h: 5.1
+      change24h: 5.1,
+      tags: ['politics', 'election']
     },
     {
       id: '3',
@@ -374,7 +386,8 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       endDate: 'Dec 31, 2025',
       traders: mockTraders,
       commentCount: 8,
-      change24h: 1.2
+      change24h: 1.2,
+      tags: ['sports', 'esports']
     },
     {
       id: '4',
@@ -387,7 +400,8 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       traders: mockTraders,
       commentCount: 156,
       change24h: 12.5,
-      isHot: true
+      isHot: true,
+      tags: ['sports', 'esports']
     },
     {
       id: '5',
@@ -399,7 +413,8 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       endDate: 'Nov 1, 2025',
       traders: mockTraders,
       commentCount: 23,
-      change24h: -0.8
+      change24h: -0.8,
+      tags: ['sports', 'basketball']
     },
     {
       id: '6',
@@ -411,7 +426,8 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       endDate: 'Nov 15, 2025',
       traders: mockTraders,
       commentCount: 5,
-      change24h: 0
+      change24h: 0,
+      tags: ['sports', 'esports']
     },
     {
       id: '7',
@@ -423,7 +439,8 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       endDate: 'Nov 1, 2025',
       traders: mockTraders,
       commentCount: 18,
-      change24h: 3.2
+      change24h: 3.2,
+      tags: ['sports', 'esports']
     },
     {
       id: '8',
@@ -435,7 +452,8 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       endDate: 'Oct 31, 2025',
       traders: mockTraders,
       commentCount: 67,
-      change24h: -5.4
+      change24h: -5.4,
+      tags: ['sports', 'basketball']
     },
     {
       id: '9',
@@ -448,7 +466,8 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       traders: mockTraders,
       commentCount: 892,
       change24h: 15.2,
-      isHot: true
+      isHot: true,
+      tags: ['crypto', 'bitcoin']
     },
      {
       id: '10',
@@ -460,7 +479,8 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       endDate: 'Dec 31, 2025',
       traders: mockTraders,
       commentCount: 34,
-      change24h: 2.1
+      change24h: 2.1,
+      tags: ['sports', 'esports']
     },
   ]
 };
