@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Market, Language } from '../types';
 import { TRANSLATIONS } from '../constants';
 import { 
@@ -11,7 +11,9 @@ import {
   MessageSquare,
   Info,
   Wallet,
-  TrendingDown
+  TrendingDown,
+  BarChart2,
+  ChevronDown
 } from 'lucide-react';
 
 interface MarketDetailProps {
@@ -21,8 +23,29 @@ interface MarketDetailProps {
   onAddToast: (msg: string, type?: 'success' | 'error') => void;
 }
 
+// Mock Order Book Data Generator
+const generateOrderBook = (basePrice: number) => {
+  const bids = [];
+  const asks = [];
+  
+  for (let i = 1; i <= 5; i++) {
+    bids.push({
+      price: (basePrice - i * 0.01).toFixed(2),
+      size: Math.floor(Math.random() * 5000) + 100,
+      total: 0
+    });
+    asks.push({
+      price: (basePrice + i * 0.01).toFixed(2),
+      size: Math.floor(Math.random() * 5000) + 100,
+      total: 0
+    });
+  }
+  return { bids, asks };
+};
+
 const MarketDetail: React.FC<MarketDetailProps> = ({ market, lang, onBack, onAddToast }) => {
   const t = TRANSLATIONS[lang];
+  // Safe Fallback for HMR
   const tDetail = t.detail || {
     back: "Back",
     outcome: "Outcome",
@@ -34,20 +57,60 @@ const MarketDetail: React.FC<MarketDetailProps> = ({ market, lang, onBack, onAdd
     potentialReturn: "Potential Return",
     placeOrder: "Place Order",
     rules: "Rules",
-    rulesDesc: "Market rules will be displayed here.",
-    comments: "Comments"
+    rulesDesc: "Rules",
+    comments: "Comments",
+    orderBook: "Order Book",
+    bids: "Bids",
+    asks: "Asks",
+    size: "Size",
+    limit: "Limit",
+    market: "Market",
+    quantity: "Quantity",
+    totalCost: "Total Cost",
+    estCost: "Est. Cost",
+    max: "Max",
+    balance: "Balance"
   };
   
   const [tradeType, setTradeType] = useState<'buy' | 'sell'>('buy');
+  const [orderType, setOrderType] = useState<'market' | 'limit'>('market');
   const [outcome, setOutcome] = useState<'yes' | 'no'>('yes');
-  const [amount, setAmount] = useState('');
+  
+  const [sharesInput, setSharesInput] = useState('');
+  const [limitPriceInput, setLimitPriceInput] = useState('');
   
   const priceYes = market.percentage / 100;
   const priceNo = (100 - market.percentage) / 100;
   const currentPrice = outcome === 'yes' ? priceYes : priceNo;
-  const shares = amount ? (parseFloat(amount) / currentPrice).toFixed(2) : '0.00';
-  const potentialReturn = amount ? (parseFloat(shares) * 1).toFixed(2) : '0.00';
-  const returnPercentage = amount ? (((parseFloat(potentialReturn) - parseFloat(amount)) / parseFloat(amount)) * 100).toFixed(0) : '0';
+
+  // Initialize Limit Price input
+  useEffect(() => {
+      setLimitPriceInput((currentPrice * 100).toFixed(1));
+  }, [outcome, currentPrice]);
+
+  // Calculations
+  const numericShares = parseFloat(sharesInput) || 0;
+  const numericLimitPrice = parseFloat(limitPriceInput) || 0; // cents
+  const limitPriceDollars = numericLimitPrice / 100;
+
+  // Cost Logic
+  const cost = orderType === 'limit'
+      ? numericShares * limitPriceDollars
+      : numericShares * currentPrice;
+
+  const potentialReturn = numericShares; // Assuming $1 payout per share
+  const returnPercentage = cost > 0 ? (((potentialReturn - cost) / cost) * 100).toFixed(0) : '0';
+
+  const orderBookData = generateOrderBook(currentPrice);
+
+  const handleMaxClick = () => {
+      // Mock Max logic: Spend $100
+      const maxSpend = 100;
+      const priceToUse = orderType === 'limit' ? limitPriceDollars : currentPrice;
+      if (priceToUse > 0) {
+          setSharesInput((maxSpend / priceToUse).toFixed(0));
+      }
+  };
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -176,36 +239,61 @@ const MarketDetail: React.FC<MarketDetailProps> = ({ market, lang, onBack, onAdd
              </div>
           </div>
 
-          {/* Rules & Comments */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-             <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-100 dark:border-slate-800">
-                <h3 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-                   <Info className="w-4 h-4 text-blue-500" /> {tDetail.rules}
+          {/* Order Book Section */}
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 overflow-hidden">
+             <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex items-center justify-between">
+                <h3 className="font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                    <BarChart2 className="w-4 h-4 text-slate-500" />
+                    {tDetail.orderBook} <span className="uppercase text-xs bg-slate-200 dark:bg-slate-700 px-2 py-0.5 rounded text-slate-600 dark:text-slate-300">{outcome}</span>
                 </h3>
-                <div className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed whitespace-pre-line">
-                   {market.rules || tDetail.rulesDesc}
+             </div>
+             
+             <div className="grid grid-cols-2 divide-x divide-slate-100 dark:divide-slate-800">
+                {/* BIDS */}
+                <div className="flex flex-col">
+                    <div className="grid grid-cols-3 px-4 py-2 bg-slate-50 dark:bg-slate-800/30 text-[10px] font-bold text-slate-400 uppercase tracking-wider text-right">
+                        <div className="text-left">{tDetail.bids}</div>
+                        <div>{tDetail.size}</div>
+                        <div>{tDetail.price}</div>
+                    </div>
+                    {orderBookData.bids.map((bid, i) => (
+                        <div key={i} className="grid grid-cols-3 px-4 py-1.5 text-xs text-right hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10 transition-colors cursor-pointer group">
+                            <div className="text-left text-slate-400 group-hover:text-emerald-600 font-medium">Bid {i+1}</div>
+                            <div className="text-slate-600 dark:text-slate-300">{bid.size}</div>
+                            <div className="font-bold text-emerald-500">{bid.price}</div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* ASKS */}
+                <div className="flex flex-col">
+                    <div className="grid grid-cols-3 px-4 py-2 bg-slate-50 dark:bg-slate-800/30 text-[10px] font-bold text-slate-400 uppercase tracking-wider text-right">
+                        <div className="text-emerald-500 dark:text-emerald-400">{tDetail.price}</div>
+                        <div>{tDetail.size}</div>
+                        <div>{tDetail.asks}</div>
+                    </div>
+                    {orderBookData.asks.map((ask, i) => (
+                        <div key={i} className="grid grid-cols-3 px-4 py-1.5 text-xs text-right hover:bg-red-50/50 dark:hover:bg-red-900/10 transition-colors cursor-pointer group">
+                            <div className="font-bold text-red-500">{ask.price}</div>
+                            <div className="text-slate-600 dark:text-slate-300">{ask.size}</div>
+                            <div className="text-slate-400 group-hover:text-red-600 font-medium">Ask {i+1}</div>
+                        </div>
+                    ))}
                 </div>
              </div>
+          </div>
 
-             <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-100 dark:border-slate-800 flex flex-col">
-                <h3 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-                   <MessageSquare className="w-4 h-4 text-purple-500" /> {tDetail.comments} ({market.commentCount})
-                </h3>
-                <div className="flex-1 space-y-4 mb-4">
-                   <div className="flex gap-3">
-                      <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 shrink-0"></div>
-                      <div className="bg-slate-50 dark:bg-slate-800 p-3 rounded-2xl rounded-tl-none text-xs text-slate-600 dark:text-slate-300">
-                         This is going to be close! But I think Yes has the edge.
-                      </div>
-                   </div>
-                </div>
-                <div className="mt-auto">
-                   <input 
-                     type="text" 
-                     placeholder="Add a comment..." 
-                     className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white"
-                   />
-                </div>
+          {/* Comments */}
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-100 dark:border-slate-800">
+             <h3 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                <MessageSquare className="w-4 h-4 text-purple-500" /> {tDetail.comments} ({market.commentCount})
+             </h3>
+             <div className="mt-auto">
+                <input 
+                  type="text" 
+                  placeholder="Add a comment..." 
+                  className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white"
+                />
              </div>
           </div>
         </div>
@@ -214,6 +302,8 @@ const MarketDetail: React.FC<MarketDetailProps> = ({ market, lang, onBack, onAdd
         <div className="lg:col-span-4">
            <div className="sticky top-24 space-y-4">
               <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-black/50 overflow-hidden">
+                 
+                 {/* Buy / Sell Tabs */}
                  <div className="flex border-b border-slate-100 dark:border-slate-800">
                     <button 
                       onClick={() => setTradeType('buy')}
@@ -229,55 +319,102 @@ const MarketDetail: React.FC<MarketDetailProps> = ({ market, lang, onBack, onAdd
                     </button>
                  </div>
 
-                 <div className="p-6 space-y-6">
+                 <div className="p-6 space-y-5">
+                    
+                    {/* Header: Order Type & Balance */}
+                    <div className="flex items-center justify-between">
+                        <div className="flex bg-slate-100 dark:bg-slate-800 rounded-lg p-1">
+                            <button 
+                                onClick={() => setOrderType('market')}
+                                className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${orderType === 'market' ? 'bg-white dark:bg-slate-600 text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'}`}
+                            >
+                                {tDetail.market}
+                            </button>
+                            <button 
+                                onClick={() => setOrderType('limit')}
+                                className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${orderType === 'limit' ? 'bg-white dark:bg-slate-600 text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'}`}
+                            >
+                                {tDetail.limit}
+                            </button>
+                        </div>
+                        <div className="text-[10px] font-bold text-slate-400 dark:text-slate-500 flex items-center gap-1">
+                            <Wallet className="w-3 h-3" />
+                            $2,450.00
+                        </div>
+                    </div>
+
+                    {/* Outcome Toggle */}
                     <div className="flex p-1 bg-slate-100 dark:bg-slate-800 rounded-xl">
                        <button 
                          onClick={() => setOutcome('yes')}
-                         className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${outcome === 'yes' ? 'bg-emerald-500 text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-emerald-500'}`}
+                         className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all ${outcome === 'yes' ? 'bg-emerald-500 text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-emerald-500'}`}
                        >
                           Yes {priceYes.toFixed(2)}
                        </button>
                        <button 
                          onClick={() => setOutcome('no')}
-                         className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${outcome === 'no' ? 'bg-orange-500 text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-orange-500'}`}
+                         className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all ${outcome === 'no' ? 'bg-orange-500 text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-orange-500'}`}
                        >
                           No {priceNo.toFixed(2)}
                        </button>
                     </div>
 
+                    {/* Limit Price Input (Only for Limit Order) */}
+                    {orderType === 'limit' && (
+                        <div className="space-y-2">
+                            <div className="flex justify-between text-xs font-bold text-slate-500 dark:text-slate-400">
+                                <span>{tDetail.price}</span>
+                            </div>
+                            <div className="relative">
+                                <input 
+                                    type="number" 
+                                    value={limitPriceInput}
+                                    onChange={(e) => setLimitPriceInput(e.target.value)}
+                                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl py-3 pl-4 pr-12 text-lg font-black text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                                />
+                                <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400 pointer-events-none">
+                                    cents
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Quantity Input (Shares) */}
                     <div className="space-y-2">
-                       <div className="flex justify-between text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">
-                          <span>{tDetail.amount}</span>
-                          <span className="flex items-center gap-1"><Wallet className="w-3 h-3" /> $2,450.00</span>
+                       <div className="flex justify-between text-xs font-bold text-slate-500 dark:text-slate-400">
+                          <span>{tDetail.quantity}</span>
+                          <button 
+                            onClick={handleMaxClick}
+                            className="text-blue-500 hover:text-blue-600 dark:hover:text-blue-400 font-bold transition-colors"
+                          >
+                            {tDetail.max}
+                          </button>
                        </div>
                        <div className="relative">
                           <input 
                             type="number" 
-                            value={amount}
-                            onChange={(e) => setAmount(e.target.value)}
+                            value={sharesInput}
+                            onChange={(e) => setSharesInput(e.target.value)}
                             placeholder="0"
                             className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl py-4 pl-4 pr-16 text-2xl font-black text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                           />
-                          <div className="absolute right-4 top-1/2 -translate-y-1/2 bg-white dark:bg-slate-700 px-2 py-1 rounded text-xs font-bold text-slate-500 dark:text-slate-300 shadow-sm">
-                             USDC
+                          <div className="absolute right-4 top-1/2 -translate-y-1/2 bg-white dark:bg-slate-700 px-2 py-1 rounded text-xs font-bold text-slate-500 dark:text-slate-300 shadow-sm pointer-events-none">
+                             Shares
                           </div>
                        </div>
                     </div>
 
+                    {/* Summary Stats */}
                     <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 space-y-3 border border-slate-100 dark:border-slate-800">
                        <div className="flex justify-between text-sm">
-                          <span className="text-slate-500 dark:text-slate-400">{tDetail.price}</span>
-                          <span className="font-bold text-slate-900 dark:text-white">{currentPrice.toFixed(2)} USDC</span>
-                       </div>
-                       <div className="flex justify-between text-sm">
-                          <span className="text-slate-500 dark:text-slate-400">{tDetail.shares}</span>
-                          <span className="font-bold text-slate-900 dark:text-white">{shares}</span>
+                          <span className="text-slate-500 dark:text-slate-400">{orderType === 'limit' ? tDetail.totalCost : tDetail.estCost}</span>
+                          <span className="font-bold text-slate-900 dark:text-white">${cost.toFixed(2)}</span>
                        </div>
                        <div className="flex justify-between text-sm">
                           <span className="text-slate-500 dark:text-slate-400">{tDetail.potentialReturn}</span>
                           <span className="font-bold text-emerald-500 flex items-center gap-1">
                              <TrendingUp className="w-3 h-3" />
-                             ${potentialReturn} ({returnPercentage}%)
+                             ${potentialReturn.toFixed(2)} ({returnPercentage}%)
                           </span>
                        </div>
                     </div>

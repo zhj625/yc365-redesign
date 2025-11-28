@@ -174,6 +174,7 @@ const App: React.FC = () => {
                 selectedMarket && (
                     <div className="mt-4">
                         <MarketDetail 
+                            key={selectedMarket.id} // FORCE RE-MOUNT ON MARKET CHANGE
                             market={selectedMarket} 
                             lang={lang} 
                             onBack={handleBack} 

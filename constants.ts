@@ -88,7 +88,19 @@ export const TRANSLATIONS = {
       placeOrder: "Place Order",
       rules: "Rules",
       rulesDesc: "Market rules will be displayed here.",
-      comments: "Comments"
+      comments: "Comments",
+      orderBook: "Order Book",
+      bids: "Bids",
+      asks: "Asks",
+      size: "Size",
+      total: "Total",
+      limit: "Limit",
+      market: "Market",
+      quantity: "Quantity",
+      totalCost: "Total Cost",
+      estCost: "Est. Cost",
+      max: "Max",
+      balance: "Balance"
     }
   },
   zh: {
@@ -168,7 +180,19 @@ export const TRANSLATIONS = {
       placeOrder: "下单",
       rules: "规则",
       rulesDesc: "此处将显示市场规则。",
-      comments: "评论"
+      comments: "评论",
+      orderBook: "订单簿",
+      bids: "买单",
+      asks: "卖单",
+      size: "数量",
+      total: "总计",
+      limit: "限价",
+      market: "市价",
+      quantity: "数量",
+      totalCost: "总成本",
+      estCost: "预估成本",
+      max: "最大",
+      balance: "余额"
     }
   }
 };
@@ -364,7 +388,7 @@ export const MARKETS_DATA: Record<Language, Market[]> = {
       isHot: true,
       tags: ['crypto', 'bitcoin']
     },
-    {
+     {
       id: '10',
       title: 'Will former EDG player Viper join BLG before the end of 2025?',
       iconUrl: 'https://picsum.photos/id/10/200/200',
