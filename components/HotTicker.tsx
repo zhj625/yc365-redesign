@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Market, Language } from '../types';
@@ -81,6 +82,7 @@ const HotTicker: React.FC<HotTickerProps> = ({ lang, onMarketClick }) => {
                     {market.percentage}%
                     {market.change24h && market.change24h > 0 && <TrendingUp className="w-3 h-3" />}
                   </span>
+                  {/* Scoped Hover Arrow */}
                   <ArrowRight className="w-3 h-3 opacity-0 group-hover/item:opacity-50 transition-opacity" />
                 </button>
               ))}

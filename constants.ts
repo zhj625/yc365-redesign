@@ -101,6 +101,41 @@ export const TRANSLATIONS = {
       estCost: "Est. Cost",
       max: "Max",
       balance: "Balance"
+    },
+    faucet: {
+      back: "Back",
+      title: "Testnet Faucet",
+      desc: "Get free test tokens to explore the prediction markets without spending real money.",
+      connected: "Connected Network",
+      address: "Wallet Address",
+      gasBalance: "Gas Balance",
+      minting: "Minting...",
+      claimed: "Claimed",
+      claim: "Claim Test USDT",
+      cooldown: "Next claim in",
+      reqTitle: "Requirements",
+      reqDesc: "You need a small amount of BNB for gas fees.",
+      getBnb: "Get BNB",
+      limitTitle: "Limits",
+      limitDesc: "You can claim 50 USDT every 24 hours.",
+      note: "Note: These tokens have no real value and are for testing purposes only."
+    },
+    deposit: {
+      copied: "Copied to clipboard",
+      error: "Please enter a valid amount",
+      deposit: "Deposit",
+      withdraw: "Withdraw",
+      success: "successful!",
+      network: "Network",
+      amount: "Deposit Amount",
+      withdrawAmount: "Withdraw Amount",
+      balance: "Balance",
+      placeholder: "Enter amount",
+      max: "Max",
+      paymentAddr: "Payment Address",
+      qr: "Show QR",
+      contractAddr: "Contract Address",
+      submit: "Submit Transaction"
     }
   },
   zh: {
@@ -193,6 +228,41 @@ export const TRANSLATIONS = {
       estCost: "预估成本",
       max: "最大",
       balance: "余额"
+    },
+    faucet: {
+      back: "返回",
+      title: "测试网水龙头",
+      desc: "获取免费测试代币，无需花费真金白银即可探索预测市场。",
+      connected: "已连接网络",
+      address: "钱包地址",
+      gasBalance: "Gas 余额",
+      minting: "铸造中...",
+      claimed: "已领取",
+      claim: "领取测试 USDT",
+      cooldown: "下次领取时间",
+      reqTitle: "要求",
+      reqDesc: "您需要少量 BNB 作为 Gas 费。",
+      getBnb: "获取 BNB",
+      limitTitle: "限制",
+      limitDesc: "您每 24 小时可以领取 50 USDT。",
+      note: "注意：这些代币没有真实价值，仅供测试使用。"
+    },
+    deposit: {
+      copied: "已复制到剪贴板",
+      error: "请输入有效金额",
+      deposit: "充值",
+      withdraw: "提现",
+      success: "成功！",
+      network: "网络",
+      amount: "充值金额",
+      withdrawAmount: "提现金额",
+      balance: "余额",
+      placeholder: "输入金额",
+      max: "最大",
+      paymentAddr: "支付地址",
+      qr: "显示二维码",
+      contractAddr: "合约地址",
+      submit: "提交交易"
     }
   }
 };

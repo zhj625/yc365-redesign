@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { 
   Search, Droplets, Plus, Wallet, Menu, Bell, 
@@ -13,9 +14,20 @@ interface HeaderProps {
   setLang: (lang: Language) => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
+  onFaucetClick?: () => void;
+  onLogoClick?: () => void;
+  onDepositClick?: () => void; // New Prop
 }
 
-const Header: React.FC<HeaderProps> = ({ lang, setLang, searchQuery, setSearchQuery }) => {
+const Header: React.FC<HeaderProps> = ({ 
+  lang, 
+  setLang, 
+  searchQuery, 
+  setSearchQuery,
+  onFaucetClick,
+  onLogoClick,
+  onDepositClick // Destructure
+}) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
@@ -65,7 +77,7 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang, searchQuery, setSearchQu
         {/* Left: Logo & Desktop Search */}
         <div className="flex items-center gap-8 flex-1">
           {/* LOGO */}
-          <div className="flex items-center gap-3 cursor-pointer group select-none">
+          <div onClick={onLogoClick} className="flex items-center gap-3 cursor-pointer group select-none">
             <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black italic text-2xl shadow-lg shadow-blue-600/20 group-hover:scale-105 transition-transform duration-300">
               <span className="pr-0.5 pt-0.5">Y</span>
             </div>
@@ -90,7 +102,10 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang, searchQuery, setSearchQu
         <div className="flex items-center gap-3 sm:gap-4">
           
           {/* Faucet - Subtle Glass Style */}
-          <button className="hidden xl:flex items-center gap-2 px-3 py-1.5 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full transition-all">
+          <button 
+            onClick={onFaucetClick}
+            className="hidden xl:flex items-center gap-2 px-3 py-1.5 text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full transition-all"
+          >
             <Droplets className="w-4 h-4" />
             <span>{t.faucet}</span>
           </button>
@@ -107,7 +122,10 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang, searchQuery, setSearchQu
           </div>
 
           {/* Deposit - Vibrant Gradient Action */}
-          <button className="hidden sm:flex items-center gap-2 px-6 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-full shadow-lg shadow-blue-600/20 transition-all hover:-translate-y-0.5 active:translate-y-0 active:shadow-none">
+          <button 
+            onClick={onDepositClick} 
+            className="hidden sm:flex items-center gap-2 px-6 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-full shadow-lg shadow-blue-600/20 transition-all hover:-translate-y-0.5 active:translate-y-0 active:shadow-none"
+          >
             <Plus className="w-4 h-4" strokeWidth={3} />
             <span>{t.deposit}</span>
           </button>
@@ -259,7 +277,7 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang, searchQuery, setSearchQu
                     <span className="text-sm font-bold text-slate-900 dark:text-slate-100 font-mono">$ 2,450.00</span>
                 </div>
              </div>
-             <button className="px-4 py-1.5 bg-blue-600 text-white text-xs font-bold rounded-lg shadow-blue-200 dark:shadow-none">
+             <button onClick={onDepositClick} className="px-4 py-1.5 bg-blue-600 text-white text-xs font-bold rounded-lg shadow-blue-200 dark:shadow-none">
                 {t.mobile.deposit}
              </button>
           </div>

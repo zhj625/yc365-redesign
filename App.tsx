@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -6,6 +7,8 @@ import FilterBar from './components/FilterBar';
 import MarketCard from './components/MarketCard';
 import MarketDetail from './components/MarketDetail';
 import MarketCardSkeleton from './components/MarketCardSkeleton';
+import FaucetView from './components/FaucetView'; 
+import DepositModal from './components/DepositModal'; 
 import Toast, { ToastProps } from './components/Toast';
 import Footer from './components/Footer';
 import { MARKETS_DATA, TRANSLATIONS } from './constants';
@@ -20,8 +23,11 @@ const App: React.FC = () => {
   const [lang, setLang] = useState<Language>('en');
   
   // Navigation State
-  const [view, setView] = useState<'list' | 'detail'>('list');
+  const [view, setView] = useState<'list' | 'detail' | 'faucet'>('list');
   const [selectedMarket, setSelectedMarket] = useState<Market | null>(null);
+
+  // Modal State
+  const [isDepositOpen, setIsDepositOpen] = useState(false);
 
   // Loading State
   const [isLoading, setIsLoading] = useState(true);
@@ -62,13 +68,19 @@ const App: React.FC = () => {
 
   const handleCategoryChange = (id: string) => {
     setActiveCategory(id);
-    if (view === 'detail') setView('list');
+    if (view !== 'list') setView('list');
   };
 
   const handleFilterChange = (id: string) => {
     setActiveFilter(id);
-    if (view === 'detail') setView('list');
+    if (view !== 'list') setView('list');
   };
+
+  // Handler for Faucet Navigation
+  const handleNavigateToFaucet = () => {
+    setView('faucet');
+    window.scrollTo(0, 0);
+  }
 
   const getFilteredAndSortedMarkets = (): Market[] => {
     let result = [...markets];
@@ -119,6 +131,9 @@ const App: React.FC = () => {
         setLang={setLang} 
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
+        onFaucetClick={handleNavigateToFaucet}
+        onLogoClick={handleBack}
+        onDepositClick={() => setIsDepositOpen(true)}
       />
       
       <div className="fixed top-24 right-4 z-[100] flex flex-col gap-3 pointer-events-none">
@@ -126,63 +141,84 @@ const App: React.FC = () => {
           <Toast key={toast.id} {...toast} />
         ))}
       </div>
+
+      {/* Deposit Modal */}
+      <DepositModal 
+        isOpen={isDepositOpen} 
+        onClose={() => setIsDepositOpen(false)} 
+        lang={lang}
+        onAddToast={addToast}
+      />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 pt-4">
         
-        {view === 'list' && <Hero lang={lang} />}
-        
+        {/* Only show Hero & Ticker on List View */}
         {view === 'list' && (
-           <HotTicker lang={lang} onMarketClick={handleMarketClick} />
+          <>
+            <Hero lang={lang} />
+            <HotTicker lang={lang} onMarketClick={handleMarketClick} />
+          </>
         )}
         
-        <div className={view === 'list' ? "mt-0" : "mt-0"}>
-            <FilterBar 
-                activeCategory={activeCategory} 
-                setActiveCategory={handleCategoryChange}
-                activeFilter={activeFilter}
-                setActiveFilter={handleFilterChange}
-                lang={lang}
-                currentSort={currentSort}
-                setCurrentSort={setCurrentSort}
-                hideFilters={view === 'detail'}
-            />
-            
-            {view === 'list' ? (
-                isLoading ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
-                        {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                        <MarketCardSkeleton key={i} />
-                        ))}
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6 animate-in fade-in zoom-in-95 duration-500">
-                        {filteredMarkets.length > 0 ? (
-                        filteredMarkets.map((market) => (
-                            <div key={market.id} onClick={() => handleMarketClick(market)} className="cursor-pointer">
-                                <MarketCard market={market} lang={lang} />
-                            </div>
-                        ))
-                        ) : (
-                        <div className="col-span-full py-20 text-center flex flex-col items-center justify-center text-slate-400 dark:text-slate-600">
-                            <p className="text-lg font-medium">{t.common.noMarkets}</p>
-                        </div>
-                        )}
-                    </div>
-                )
+        {/* Show FilterBar on List AND Detail (hidden second row via prop), but hide on Faucet */}
+        {view !== 'faucet' && (
+           <div className={view === 'list' ? "mt-0" : "mt-0"}>
+              <FilterBar 
+                  activeCategory={activeCategory} 
+                  setActiveCategory={handleCategoryChange}
+                  activeFilter={activeFilter}
+                  setActiveFilter={handleFilterChange}
+                  lang={lang}
+                  currentSort={currentSort}
+                  setCurrentSort={setCurrentSort}
+                  hideFilters={view === 'detail'}
+              />
+           </div>
+        )}
+        
+        {/* VIEW ROUTING */}
+        {view === 'list' && (
+            isLoading ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
+                    {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                    <MarketCardSkeleton key={i} />
+                    ))}
+                </div>
             ) : (
-                selectedMarket && (
-                    <div className="mt-4">
-                        <MarketDetail 
-                            key={selectedMarket.id}
-                            market={selectedMarket} 
-                            lang={lang} 
-                            onBack={handleBack} 
-                            onAddToast={addToast}
-                        />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6 animate-in fade-in zoom-in-95 duration-500">
+                    {filteredMarkets.length > 0 ? (
+                    filteredMarkets.map((market) => (
+                        <div key={market.id} onClick={() => handleMarketClick(market)} className="cursor-pointer">
+                            <MarketCard market={market} lang={lang} />
+                        </div>
+                    ))
+                    ) : (
+                    <div className="col-span-full py-20 text-center flex flex-col items-center justify-center text-slate-400 dark:text-slate-600">
+                        <p className="text-lg font-medium">{t.common.noMarkets}</p>
                     </div>
-                )
-            )}
-        </div>
+                    )}
+                </div>
+            )
+        )}
+
+        {view === 'detail' && selectedMarket && (
+            <div className="mt-4">
+                <MarketDetail 
+                    key={`${selectedMarket.id}-${Date.now()}`} // Unique Key to force re-mount
+                    market={selectedMarket} 
+                    lang={lang} 
+                    onBack={handleBack} 
+                    onAddToast={addToast}
+                />
+            </div>
+        )}
+
+        {view === 'faucet' && (
+            <div className="mt-8">
+               <FaucetView lang={lang} onAddToast={addToast} onBack={handleBack} />
+            </div>
+        )}
+
       </main>
 
       <Footer />
