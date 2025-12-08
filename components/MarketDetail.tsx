@@ -292,6 +292,49 @@ const MarketDetail: React.FC<MarketDetailProps> = ({ market, lang, onBack, onAdd
              </div>
           </div>
 
+          {/* OUTCOMES (YES/NO Bars) */}
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 overflow-hidden">
+             <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex items-center justify-between">
+                <h3 className="font-bold text-slate-800 dark:text-white">{tDetail.outcome}</h3>
+                <span className="text-xs font-bold text-slate-400 uppercase">{tDetail.price}</span>
+             </div>
+             <div className="p-4 space-y-3">
+                <div 
+                   onClick={() => { setOutcome('yes'); setTradeType('buy'); }}
+                   className={`group relative p-3 rounded-xl border-2 transition-all cursor-pointer ${outcome === 'yes' ? 'border-emerald-500 bg-emerald-50/30 dark:bg-emerald-900/10' : 'border-transparent bg-slate-50 dark:bg-slate-800 hover:border-emerald-200 dark:hover:border-emerald-800'}`}
+                >
+                   <div className="absolute top-0 left-0 bottom-0 bg-emerald-100 dark:bg-emerald-900/20 rounded-l-lg transition-all" style={{ width: `${market.percentage}%` }}></div>
+                   <div className="relative flex items-center justify-between z-10">
+                      <div className="flex items-center gap-3">
+                         <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-xs">YES</div>
+                         <span className="font-bold text-slate-700 dark:text-slate-200">Yes</span>
+                      </div>
+                      <div className="flex flex-col items-end">
+                         <span className="text-lg font-bold text-emerald-600 dark:text-emerald-400">{market.percentage}%</span>
+                         <span className="text-xs text-slate-400">{priceYes.toFixed(2)}¢</span>
+                      </div>
+                   </div>
+                </div>
+
+                <div 
+                   onClick={() => { setOutcome('no'); setTradeType('buy'); }}
+                   className={`group relative p-3 rounded-xl border-2 transition-all cursor-pointer ${outcome === 'no' ? 'border-orange-500 bg-orange-50/30 dark:bg-orange-900/10' : 'border-transparent bg-slate-50 dark:bg-slate-800 hover:border-orange-200 dark:hover:border-orange-800'}`}
+                >
+                   <div className="absolute top-0 left-0 bottom-0 bg-orange-100 dark:bg-orange-900/20 rounded-l-lg transition-all" style={{ width: `${100 - market.percentage}%` }}></div>
+                   <div className="relative flex items-center justify-between z-10">
+                      <div className="flex items-center gap-3">
+                         <div className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold text-xs">NO</div>
+                         <span className="font-bold text-slate-700 dark:text-slate-200">No</span>
+                      </div>
+                      <div className="flex flex-col items-end">
+                         <span className="text-lg font-bold text-orange-600 dark:text-orange-400">{100 - market.percentage}%</span>
+                         <span className="text-xs text-slate-400">{priceNo.toFixed(2)}¢</span>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+
           {/* RULES SECTION (Expandable) */}
           <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 overflow-hidden">
              <button 

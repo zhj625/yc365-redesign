@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
+import HotTicker from './components/HotTicker';
 import FilterBar from './components/FilterBar';
 import MarketCard from './components/MarketCard';
 import MarketDetail from './components/MarketDetail';
@@ -72,25 +73,21 @@ const App: React.FC = () => {
   const getFilteredAndSortedMarkets = (): Market[] => {
     let result = [...markets];
 
-    // 1. Search Query
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       result = result.filter(m => m.title.toLowerCase().includes(query));
     }
 
-    // 2. Category Filter
     if (activeCategory === 'hot') {
         result = result.filter(m => m.isHot);
     } else if (activeCategory !== 'all') {
       result = result.filter(m => m.category === activeCategory);
     }
 
-    // 3. Tag Filter (activeFilter)
     if (activeFilter !== 'all') {
        result = result.filter(m => m.tags && m.tags.includes(activeFilter));
     }
 
-    // 4. Sorting
     result.sort((a, b) => {
       switch (currentSort) {
         case 'total_volume':
@@ -130,13 +127,15 @@ const App: React.FC = () => {
         ))}
       </div>
       
-      {/* Reduced top padding for main container */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 pt-4">
         
         {view === 'list' && <Hero lang={lang} />}
         
-        {/* Dynamic margin: mt-8 for list (space after Hero), mt-0 for detail (tight to filter bar) */}
-        <div className={view === 'list' ? "mt-8" : "mt-0"}>
+        {view === 'list' && (
+           <HotTicker lang={lang} onMarketClick={handleMarketClick} />
+        )}
+        
+        <div className={view === 'list' ? "mt-0" : "mt-0"}>
             <FilterBar 
                 activeCategory={activeCategory} 
                 setActiveCategory={handleCategoryChange}
@@ -174,7 +173,7 @@ const App: React.FC = () => {
                 selectedMarket && (
                     <div className="mt-4">
                         <MarketDetail 
-                            key={selectedMarket.id} // FORCE RE-MOUNT ON MARKET CHANGE
+                            key={selectedMarket.id}
                             market={selectedMarket} 
                             lang={lang} 
                             onBack={handleBack} 
