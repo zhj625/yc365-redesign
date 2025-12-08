@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
-import HotTicker from './components/HotTicker';
+import Ticker from './components/Ticker'; // NEW IMPORT
 import FilterBar from './components/FilterBar';
 import MarketCard from './components/MarketCard';
-import MarketDetail from './components/MarketDetail';
+import MarketView from './components/MarketView'; // NEW IMPORT
 import MarketCardSkeleton from './components/MarketCardSkeleton';
 import FaucetView from './components/FaucetView'; 
 import DepositModal from './components/DepositModal'; 
@@ -156,7 +155,7 @@ const App: React.FC = () => {
         {view === 'list' && (
           <>
             <Hero lang={lang} />
-            <HotTicker lang={lang} onMarketClick={handleMarketClick} />
+            <Ticker lang={lang} onMarketClick={handleMarketClick} />
           </>
         )}
         
@@ -203,7 +202,7 @@ const App: React.FC = () => {
 
         {view === 'detail' && selectedMarket && (
             <div className="mt-4">
-                <MarketDetail 
+                <MarketView 
                     key={`${selectedMarket.id}-${Date.now()}`} // Unique Key to force re-mount
                     market={selectedMarket} 
                     lang={lang} 

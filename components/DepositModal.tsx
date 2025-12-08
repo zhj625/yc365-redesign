@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { X, Copy, CheckCircle2, Wallet, ArrowRight, QrCode } from 'lucide-react';
 import { Language } from '../types';

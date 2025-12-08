@@ -20,7 +20,7 @@ import {
   ChevronUp
 } from 'lucide-react';
 
-interface MarketDetailProps {
+interface MarketViewProps {
   market: Market;
   lang: Language;
   onBack: () => void;
@@ -54,7 +54,7 @@ const MOCK_COMMENTS = [
     { id: 3, user: 'SatoshiFan', avatar: 'https://picsum.photos/id/15/50/50', time: '1h ago', text: 'Volume is picking up significantly on the Yes side.' },
 ];
 
-const MarketDetail: React.FC<MarketDetailProps> = ({ market, lang, onBack, onAddToast }) => {
+const MarketView: React.FC<MarketViewProps> = ({ market, lang, onBack, onAddToast }) => {
   const t = TRANSLATIONS[lang];
   // Safe Fallback for HMR or missing keys
   const tDetail = t.detail || {
@@ -515,4 +515,4 @@ const MarketDetail: React.FC<MarketDetailProps> = ({ market, lang, onBack, onAdd
   );
 };
 
-export default MarketDetail;
+export default MarketView;
