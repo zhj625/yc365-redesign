@@ -58,7 +58,7 @@ const STEPS_DATA: Record<Language, Step[]> = {
     { targetId: 'onboarding-market-card', title: '查看市场详情', description: '点击此卡片进入详情页，查看更详细的订单簿和规则。', icon: <Layout className="w-5 h-5 text-blue-500" />, isTransition: true },
     { targetId: 'market-orderbook-section', title: '订单簿与图表', description: '通过实时订单簿和价格走势图分析市场流动性。', icon: <BarChart2 className="w-5 h-5 text-indigo-500" /> },
     { targetId: 'market-rules-section', title: '结算规则', description: '下单前请务必阅读该市场的具体结算标准。', icon: <Gavel className="w-5 h-5 text-amber-600" /> },
-    { targetId: 'market-comments-section', title: '社区讨论', description: '查看其他交易者的观点，或分享您对该事件的见解。', icon: <MessageSquare className="w-5 h-5 text-purple-500" /> },
+    { targetId: 'market-comments-section', title: '社区讨论', description: '查看其他交易者的观点，或分享您对该事件的见解。', icon: <MessageSquare className="w-4 h-4 text-purple-500" /> },
     { targetId: 'order-panel-container', title: '立即下单', description: '选择立场（是/否），输入金额并确认您的预测。', icon: <Zap className="w-5 h-5 text-emerald-600" /> }
   ]
 };
@@ -95,84 +95,88 @@ const Onboarding: React.FC<OnboardingProps> = ({ currentStepProp, onClose, onSte
     const step = steps[currentStepProp];
     const element = document.getElementById(step.targetId);
     
-    if (element) {
-      const rect = element.getBoundingClientRect();
-      if (rect.width > 0 && rect.height > 0) {
-        setIsSpotlightActive(true);
-        
-        const overlayColor = isDark ? 'rgba(0, 0, 0, 0.75)' : 'rgba(15, 23, 42, 0.12)';
-        const borderColor = isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(37, 99, 235, 0.4)';
-        
-        setSpotlightStyle({
-          position: 'fixed', 
-          top: rect.top - 6, 
-          left: rect.left - 6,
-          width: rect.width + 12, 
-          height: rect.height + 12,
-          borderRadius: rect.width > 120 ? '16px' : '999px',
-          zIndex: 99999, 
-          pointerEvents: 'none', 
-          transition: 'all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)',
-          border: `1.5px solid ${borderColor}`,
-          boxShadow: `0 0 0 9999px ${overlayColor}, 0 0 15px ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(37,99,235,0.1)'}`,
-        });
-
-        // --- 优化后的智能定位逻辑 ---
-        const tooltipWidth = 300;
-        const tooltipHeight = 220; // 预估高度
-        const margin = 20;
-
-        let tTop = rect.bottom + margin;
-        let tLeft = rect.left + rect.width / 2 - tooltipWidth / 2;
-        
-        // 1. 检查下方是否有足够空间
-        if (tTop + tooltipHeight > window.innerHeight) {
-            // 下方没空间，尝试放上方
-            tTop = rect.top - tooltipHeight - margin;
-            
-            // 2. 如果上方也没空间（比如元素太靠顶），则强制放在视口内可见位置
-            if (tTop < 0) {
-                // 如果是侧边面板，尝试放在左侧
-                if (rect.left > tooltipWidth + margin) {
-                    tTop = rect.top;
-                    tLeft = rect.left - tooltipWidth - margin;
-                } else {
-                    // 兜底：放在元素下方，即使会遮挡一点，但至少在视口内
-                    tTop = Math.max(80, rect.top + 50); 
-                }
-            }
-        }
-
-        // 3. 边界锁定：确保不超出屏幕左右边缘
-        tLeft = Math.max(margin, Math.min(window.innerWidth - tooltipWidth - margin, tLeft));
-        // 4. 边界锁定：确保不超出屏幕顶部
-        tTop = Math.max(80, Math.min(window.innerHeight - tooltipHeight - margin, tTop));
-
-        setTooltipPos({
-          position: 'fixed', 
-          top: tTop, 
-          left: tLeft, 
-          width: tooltipWidth,
-          zIndex: 100000, 
-          transition: 'all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)', 
-          opacity: 1,
-          pointerEvents: 'auto'
-        });
-        return;
-      }
-    }
-    
-    // 如果找不到元素（可能正在切换视图），暂时将提示框置于中间
-    setIsSpotlightActive(false);
-    setTooltipPos({
+    // 如果找不到元素，可能正在视图转换中
+    if (!element || element.offsetParent === null) {
+      setIsSpotlightActive(false);
+      setTooltipPos({
         position: 'fixed', 
         top: '50%', 
         left: '50%', 
         transform: 'translate(-50%, -50%)',
-        width: 300, 
+        width: 320, 
         zIndex: 100000, 
         opacity: 1, 
-        pointerEvents: 'auto'
+        pointerEvents: 'auto',
+        transition: 'all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)'
+      });
+      return;
+    }
+
+    const rect = element.getBoundingClientRect();
+    
+    // 元素存在但宽度为0，说明还没渲染好
+    if (rect.width === 0) {
+        setIsSpotlightActive(false);
+        setTooltipPos(prev => ({ ...prev, opacity: 0 }));
+        return;
+    }
+
+    setIsSpotlightActive(true);
+    const overlayColor = isDark ? 'rgba(0, 0, 0, 0.75)' : 'rgba(15, 23, 42, 0.12)';
+    const borderColor = isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(37, 99, 235, 0.4)';
+    
+    setSpotlightStyle({
+      position: 'fixed', 
+      top: rect.top - 6, 
+      left: rect.left - 6,
+      width: rect.width + 12, 
+      height: rect.height + 12,
+      borderRadius: rect.width > 120 ? '16px' : '999px',
+      zIndex: 99999, 
+      pointerEvents: 'none', 
+      transition: 'all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)',
+      border: `1.5px solid ${borderColor}`,
+      boxShadow: `0 0 0 9999px ${overlayColor}, 0 0 15px ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(37,99,235,0.1)'}`,
+    });
+
+    // 智能定位算法
+    const tWidth = 320;
+    const tHeight = 220; 
+    const margin = 24;
+
+    let tTop = rect.bottom + margin;
+    let tLeft = rect.left + rect.width / 2 - tWidth / 2;
+
+    // 边界检测与修正
+    if (tTop + tHeight > window.innerHeight) {
+      tTop = rect.top - tHeight - margin;
+      if (tTop < 80) { // 避开页头
+        tTop = Math.max(80, rect.bottom + margin);
+        // 如果上下都放不下，靠侧边放
+        if (rect.left > tWidth + margin) {
+            tLeft = rect.left - tWidth - margin;
+            tTop = rect.top;
+        } else {
+            tLeft = rect.right + margin;
+            tTop = rect.top;
+        }
+      }
+    }
+
+    // 强制限制在屏幕内
+    tLeft = Math.max(margin, Math.min(window.innerWidth - tWidth - margin, tLeft));
+    tTop = Math.max(80, Math.min(window.innerHeight - tHeight - margin, tTop));
+
+    setTooltipPos({
+      position: 'fixed', 
+      top: tTop, 
+      left: tLeft, 
+      width: tWidth,
+      zIndex: 100000, 
+      transition: 'all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)', 
+      opacity: 1,
+      pointerEvents: 'auto',
+      transform: 'none'
     });
   }, [currentStepProp, steps, isDark]);
 
